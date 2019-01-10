@@ -42,9 +42,34 @@ class Weather extends Component {
 
   render() {
     const { weatherData, forecastData } = this.state;
+    const fiveDayForecast = {};
+    let newArr = [];
 
-    console.log(weatherData);
-    console.log(forecastData);
+    if (forecastData) {
+      for (let i = 0; i < forecastData.list.length; i++) {
+        let forecast = forecastData.list[i];
+        let date = forecast.dt_txt.slice(0, 10);
+
+        if (fiveDayForecast[date]) {
+          if (fiveDayForecast[date].high > forecast.main.temp) {
+            fiveDayForecast[date].low = forecast.main.temp;
+          } else if (fiveDayForecast[date].high < forecast.main.temp) {
+            fiveDayForecast[date].high = forecast.main.temp;
+          }
+        } else {
+          fiveDayForecast[date] = {
+            ["dt"]: date,
+            ["high"]: forecast.main.temp,
+            ["low"]: 0,
+            ["description"]: forecast.weather[0].description
+          };
+        }
+      }
+    }
+
+    for (let key in fiveDayForecast) {
+      newArr.push(fiveDayForecast[key]);
+    }
 
     return (
       <div>
@@ -62,12 +87,14 @@ class Weather extends Component {
         )}
         <div>
           {forecastData &&
-            forecastData.list.map((forecast, idx) => {
+            newArr &&
+            newArr.map((forecast, idx) => {
               return (
-                <div>
-                  <h4>{forecast.dt_txt}</h4>
-                  <p>Temp: {forecast.main.temp}</p>
-                  <p>{forecast.weather[0].description}</p>
+                <div key={idx}>
+                  <h4>{forecast.dt}</h4>
+                  <p>High: {forecast.high}</p>
+                  <p>Low: {forecast.low}</p>
+                  <p>{forecast.description}</p>
                 </div>
               );
             })}
