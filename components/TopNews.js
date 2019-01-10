@@ -8,7 +8,11 @@ class TopNews extends Component {
   }
 
   render() {
-    return <div>TopNews</div>;
+    return (
+      <div>
+        <h1>TopNews</h1>
+      </div>
+    );
   }
 }
 

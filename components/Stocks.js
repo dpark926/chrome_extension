@@ -8,7 +8,11 @@ class Stocks extends Component {
   }
 
   render() {
-    return <div>Stocks</div>;
+    return (
+      <div>
+        <h1>Stocks</h1>
+      </div>
+    );
   }
 }
 
