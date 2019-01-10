@@ -10,7 +10,7 @@ class Weather extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     const { currentZip } = this.state;
 
     fetch(
@@ -38,7 +38,7 @@ class Weather extends Component {
         })
       )
       .catch(err => console.log(err));
-  };
+  }
 
   render() {
     const { weatherData, forecastData } = this.state;
