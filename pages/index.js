@@ -5,6 +5,7 @@ import Stocks from "../components/Stocks";
 import TopNews from "../components/TopNews";
 import Weather from "../components/Weather";
 import TimeDate from "../components/TimeDate";
+import "../styles/styles.scss";
 
 class index extends Component {
   constructor() {
@@ -14,8 +15,14 @@ class index extends Component {
 
   render() {
     return (
-      <div>
+      <div className="everything">
         <div>Homepage</div>
+        <div>
+          <TimeDate />
+        </div>
+        <div>
+          <Weather />
+        </div>
         <div>
           <Crypto />
         </div>
@@ -24,12 +31,6 @@ class index extends Component {
         </div>
         <div>
           <TopNews />
-        </div>
-        <div>
-          <Weather />
-        </div>
-        <div>
-          <TimeDate />
         </div>
       </div>
     );

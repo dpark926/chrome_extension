@@ -25,8 +25,12 @@ class Crypto extends Component {
     return (
       <div>
         <h1>Crypto</h1>
-        {cryptoData && <h4>My Value: {5.61712285 * cryptoData.ETH.USD}</h4>}
-        <p>ETH bought at $125.33</p>
+        {cryptoData && (
+          <h4>
+            My Value: ${" "}
+            {Math.round(5.61712285 * cryptoData.ETH.USD * 100) / 100}
+          </h4>
+        )}
         {cryptoData &&
           Object.keys(cryptoData).map((token, idx) => {
             return (

@@ -85,16 +85,20 @@ class Weather extends Component {
             <div>{weatherData.weather[0].description}</div>
           </div>
         )}
-        <div>
+        <div className="flex">
           {forecastData &&
             newArr &&
             newArr.map((forecast, idx) => {
               return (
-                <div key={idx}>
+                <div
+                  key={idx}
+                  className="flex-auto center m1"
+                  style={{ border: "1px solid red" }}
+                >
                   <h4>{forecast.dt}</h4>
+                  <p>{forecast.description}</p>
                   <p>High: {forecast.high}</p>
                   <p>Low: {forecast.low}</p>
-                  <p>{forecast.description}</p>
                 </div>
               );
             })}
