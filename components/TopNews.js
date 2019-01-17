@@ -27,15 +27,18 @@ class TopNews extends Component {
     const { newsData } = this.state;
 
     return (
-      <div>
-        <h1>TopNews</h1>
+      <div className="col-6">
         {newsData &&
           newsData.articles.map((news, idx) => {
             return (
-              <div key={idx}>
-                <div>{news.title}</div>
-                <div>{news.author}</div>
-                <div>{news.source.name}</div>
+              <div
+                key={idx}
+                className="p1"
+                style={{ border: "1px solid gray" }}
+              >
+                <Link href={news.url}>
+                  <a>{news.title}</a>
+                </Link>
               </div>
             );
           })}

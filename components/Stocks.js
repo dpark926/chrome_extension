@@ -9,7 +9,7 @@ class Stocks extends Component {
 
   render() {
     return (
-      <div>
+      <div className="col-6">
         <h1>Stocks</h1>
       </div>
     );

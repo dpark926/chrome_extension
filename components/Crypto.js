@@ -23,8 +23,7 @@ class Crypto extends Component {
     const { cryptoData } = this.state;
 
     return (
-      <div>
-        <h1>Crypto</h1>
+      <div className="ml1" style={{ border: "1px solid blue" }}>
         {cryptoData && (
           <h4>
             My Value: ${" "}

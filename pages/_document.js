@@ -3,6 +3,7 @@
 
 // ./pages/_document.js
 import Document, { Head, Main, NextScript } from "next/document";
+import "../styles/styles.scss";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -24,7 +25,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className="custom_class">
+        <body className="custom_class inconsolata">
           <Main />
           <NextScript />
         </body>

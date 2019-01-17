@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import { keys } from "../config/keys";
+import "../styles/styles.scss";
 
 class Weather extends Component {
   constructor() {
@@ -72,20 +73,27 @@ class Weather extends Component {
     }
 
     return (
-      <div>
-        <h1>Weather</h1>
+      <div className="flex" style={{ border: "1px solid green" }}>
         {weatherData && (
-          <div>
+          <div className="center m1 flex flex-column justify-center">
             <div>{weatherData.name}</div>
-            <div>Temp: {weatherData.main.temp}</div>
-            <div>Temp Max: {weatherData.main.temp_max}</div>
-            <div>Temp Min: {weatherData.main.temp_min}</div>
+            <div className="capitalize">
+              {weatherData.weather[0].description}
+            </div>
+            <div className="h2">{Math.round(weatherData.main.temp)}°</div>
+            <p className="flex justify-center m0">
+              <span className="p1">
+                {Math.round(weatherData.main.temp_max)}°
+              </span>
+              <span className="p1">
+                {Math.round(weatherData.main.temp_min)}°
+              </span>
+            </p>
             <div>Humidity: {weatherData.main.humidity}</div>
             <div>Pressure: {weatherData.main.pressure}</div>
-            <div>{weatherData.weather[0].description}</div>
           </div>
         )}
-        <div className="flex">
+        <div className="flex flex-auto">
           {forecastData &&
             newArr &&
             newArr.map((forecast, idx) => {
@@ -96,9 +104,11 @@ class Weather extends Component {
                   style={{ border: "1px solid red" }}
                 >
                   <h4>{forecast.dt}</h4>
-                  <p>{forecast.description}</p>
-                  <p>High: {forecast.high}</p>
-                  <p>Low: {forecast.low}</p>
+                  <p className="capitalize">{forecast.description}</p>
+                  <p>
+                    <span className="p1">{Math.round(forecast.high)}°</span>
+                    <span className="p1">{Math.round(forecast.low)}°</span>
+                  </p>
                 </div>
               );
             })}

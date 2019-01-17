@@ -42,10 +42,9 @@ class TimeDate extends Component {
 
   render() {
     return (
-      <div>
-        <h1>TimeDate</h1>
+      <div className="m1">
+        <span className="h2">{this.renderTime()}</span>
         {this.renderDate()}
-        {this.renderTime()}
       </div>
     );
   }

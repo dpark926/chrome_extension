@@ -5,7 +5,6 @@ import Stocks from "../components/Stocks";
 import TopNews from "../components/TopNews";
 import Weather from "../components/Weather";
 import TimeDate from "../components/TimeDate";
-import "../styles/styles.scss";
 
 class index extends Component {
   constructor() {
@@ -15,23 +14,16 @@ class index extends Component {
 
   render() {
     return (
-      <div className="everything">
-        <div>Homepage</div>
-        <div>
+      <div className="flex mx2">
+        <div className="flex-auto">
           <TimeDate />
-        </div>
-        <div>
           <Weather />
+          <div className="flex">
+            <TopNews />
+            <Stocks />
+          </div>
         </div>
-        <div>
-          <Crypto />
-        </div>
-        <div>
-          <Stocks />
-        </div>
-        <div>
-          <TopNews />
-        </div>
+        <Crypto />
       </div>
     );
   }
