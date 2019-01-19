@@ -1,7 +1,38 @@
+@import "./variables";
+
 .inconsolata {
   font-family: "Inconsolata", monospace;
 }
 
 .capitalize {
   text-transform: capitalize;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    text-decoration: underline;
+    color: $blue;
+  }
+}
+
+.white {
+  color: $white;
+}
+
+.light-gray {
+  color: $light-gray;
+}
+
+.green {
+  color: $green;
+}
+
+.red {
+  color: $red;
+}
+
+.bg-black {
+  background: $dark-gray;
 }

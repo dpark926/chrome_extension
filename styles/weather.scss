@@ -1,0 +1,9 @@
+@import "./variables";
+
+.weather {
+  border-bottom: 1px solid $light-gray;
+}
+
+.weather-item {
+  width: 15%;
+}

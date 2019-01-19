@@ -1,0 +1,13 @@
+@import "./variables";
+
+.crypto {
+  border-left: 1px solid $light-gray;
+}
+
+.crypto-item {
+  border-top: 1px solid $divider;
+}
+
+.time-tab {
+  border-bottom: 1px solid $divider;
+}

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import { keys } from "../config/keys";
+import "../styles/topnews.scss";
 
 class TopNews extends Component {
   constructor() {
@@ -31,11 +32,7 @@ class TopNews extends Component {
         {newsData &&
           newsData.articles.map((news, idx) => {
             return (
-              <div
-                key={idx}
-                className="p1"
-                style={{ border: "1px solid gray" }}
-              >
+              <div key={idx} className="news-section p1">
                 <Link href={news.url}>
                   <a>{news.title}</a>
                 </Link>

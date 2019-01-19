@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import { keys } from "../config/keys";
 import "../styles/styles.scss";
+import "../styles/weather.scss";
 
 class Weather extends Component {
   constructor() {
@@ -73,7 +74,7 @@ class Weather extends Component {
     }
 
     return (
-      <div className="flex" style={{ border: "1px solid green" }}>
+      <div className="topnews weather flex">
         {weatherData && (
           <div className="center m1 flex flex-column justify-center">
             <div>{weatherData.name}</div>
@@ -98,11 +99,7 @@ class Weather extends Component {
             newArr &&
             newArr.map((forecast, idx) => {
               return (
-                <div
-                  key={idx}
-                  className="flex-auto center m1"
-                  style={{ border: "1px solid red" }}
-                >
+                <div key={idx} className="weather-item center">
                   <h4>{forecast.dt}</h4>
                   <p className="capitalize">{forecast.description}</p>
                   <p>

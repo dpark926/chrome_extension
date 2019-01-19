@@ -14,7 +14,7 @@ class index extends Component {
 
   render() {
     return (
-      <div className="flex mx2">
+      <div className="flex bg-black white">
         <div className="flex-auto">
           <TimeDate />
           <Weather />
