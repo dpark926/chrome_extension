@@ -17,6 +17,8 @@
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "react-loader": "^2.4.5"
+    "react-loader": "^2.4.5",
+    "rmdi": "^1.0.1",
+    "styled-components": "^4.1.3"
   }
 }

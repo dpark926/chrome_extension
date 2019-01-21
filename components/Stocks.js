@@ -3,6 +3,11 @@ import Link from "next/link";
 import { keys } from "../config/keys";
 import "../styles/stocks.scss";
 import Loader from "react-loader";
+import ArrowUpward from "rmdi/lib/ArrowUpward";
+import ArrowDownward from "rmdi/lib/ArrowDownward";
+import PriorityHigh from "rmdi/lib/PriorityHigh";
+import ThumbUp from "rmdi/lib/ThumbUp";
+import ThumbDown from "rmdi/lib/ThumbDown";
 
 class Stocks extends Component {
   constructor() {
@@ -38,6 +43,7 @@ class Stocks extends Component {
             <Loader color="#fff" />
           </div>
         )}
+
         {cryptoNewsData &&
           cryptoNewsData.results.map((news, idx) => {
             return (
@@ -48,21 +54,36 @@ class Stocks extends Component {
                     <span className="nowrap">{` - ${news.source.domain}`}</span>
                   </a>
                 </Link>
-                <div>
+                <div className="flex pt1">
                   {news.votes.liked > 0 && (
-                    <span className="pr2 green">{news.votes.liked}</span>
+                    <div className="flex pr2 green">
+                      <ArrowUpward size={18} color="green" />
+                      {news.votes.liked}
+                    </div>
                   )}
                   {news.votes.important > 0 && (
-                    <span className="pr2">{news.votes.important}</span>
+                    <div className="flex pr2 yellow">
+                      <PriorityHigh size={18} color="#daff00" />
+                      {news.votes.important}
+                    </div>
                   )}
                   {news.votes.disliked > 0 && (
-                    <span className="pr2 red">{news.votes.disliked}</span>
+                    <div className="flex pr2 orange">
+                      <ArrowDownward size={18} color="#ffa500" />
+                      {news.votes.disliked}
+                    </div>
                   )}
                   {news.votes.positive > 0 && (
-                    <span className="pr2 blue">{news.votes.positive}</span>
+                    <div className="flex pr2 blue">
+                      <ThumbUp size={18} color="#23a8c3" />
+                      <span className="pl1">{news.votes.positive}</span>
+                    </div>
                   )}
                   {news.votes.negative > 0 && (
-                    <span className="pr2 red">{news.votes.negative}</span>
+                    <div className="flex pr2 red">
+                      <ThumbDown size={18} color="#b70519" />
+                      <span className="pl1">{news.votes.negative}</span>
+                    </div>
                   )}
                 </div>
               </div>
