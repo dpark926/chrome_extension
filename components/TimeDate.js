@@ -21,7 +21,9 @@ class TimeDate extends Component {
     const { day, month, date, year } = this.state;
 
     return (
-      <div>{`${Days[day].abv}, ${Months[month].abv}. ${date}, ${year}`}</div>
+      <div className="light-gray">{`${Days[day].abv}, ${
+        Months[month].abv
+      }. ${date}, ${year}`}</div>
     );
   };
 

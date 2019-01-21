@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
+import Loader from "react-loader";
 import { keys } from "../config/keys";
 import "../styles/topnews.scss";
-import Loader from "react-loader";
 
 class TopNews extends Component {
   constructor() {

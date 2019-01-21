@@ -14,7 +14,8 @@
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: $light-gray;
+
   &:hover {
     text-decoration: underline;
     color: $blue;

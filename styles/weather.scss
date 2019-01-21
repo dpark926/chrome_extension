@@ -1,9 +1,10 @@
 @import "./variables";
 
 .weather {
+  border-top: 1px solid $light-gray;
   border-bottom: 1px solid $light-gray;
 }
 
 .weather-item {
-  width: 15%;
+  border-left: 1px solid $divider;
 }

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
+import WbCloudy from "rmdi/lib/WbCloudy";
+import { Days } from "../src/date";
 import { keys } from "../config/keys";
 import "../styles/styles.scss";
 import "../styles/weather.scss";
@@ -60,7 +62,7 @@ class Weather extends Component {
           }
         } else {
           fiveDayForecast[date] = {
-            ["dt"]: date,
+            ["dt"]: forecast.dt_txt,
             ["high"]: forecast.main.temp,
             ["low"]: 0,
             ["description"]: forecast.weather[0].description
@@ -73,16 +75,21 @@ class Weather extends Component {
       newArr.push(fiveDayForecast[key]);
     }
 
+    console.log(weatherData);
+
     return (
-      <div className="topnews weather flex">
+      <div className="weather flex">
         {weatherData && (
-          <div className="center m1 flex flex-column justify-center">
+          <div className="center p1 flex flex-column justify-center col-2">
             <div>{weatherData.name}</div>
-            <div className="capitalize">
+            <div className="capitalize light-gray">
               {weatherData.weather[0].description}
             </div>
+            <div>
+              <WbCloudy size={52} color="#9d9d9f" />
+            </div>
             <div className="h2">{Math.round(weatherData.main.temp)}°</div>
-            <p className="flex justify-center m0">
+            <p className="flex justify-center m0 light-gray">
               <span className="p1">
                 {Math.round(weatherData.main.temp_max)}°
               </span>
@@ -90,21 +97,31 @@ class Weather extends Component {
                 {Math.round(weatherData.main.temp_min)}°
               </span>
             </p>
-            <div>Humidity: {weatherData.main.humidity}</div>
-            <div>Pressure: {weatherData.main.pressure}</div>
           </div>
         )}
-        <div className="flex flex-auto">
+        <div className="flex flex-auto justify-center col-10">
           {forecastData &&
             newArr &&
             newArr.map((forecast, idx) => {
+              var d = new Date(forecast.dt);
+
               return (
-                <div key={idx} className="weather-item center">
-                  <h4>{forecast.dt}</h4>
-                  <p className="capitalize">{forecast.description}</p>
-                  <p>
+                <div
+                  key={idx}
+                  className="flex flex-column justify-center weather-item col-2 center p1"
+                >
+                  <h4 className="m0">{Days[d.getDay()].abv.toUpperCase()}</h4>
+                  <p className="capitalize light-gray m0">
+                    {forecast.description}
+                  </p>
+                  <div className="py1">
+                    <WbCloudy size={52} color="#9d9d9f" />
+                  </div>
+                  <p className="m0">
                     <span className="p1">{Math.round(forecast.high)}°</span>
-                    <span className="p1">{Math.round(forecast.low)}°</span>
+                    <span className="p1 light-gray">
+                      {Math.round(forecast.low)}°
+                    </span>
                   </p>
                 </div>
               );

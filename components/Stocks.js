@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
-import { keys } from "../config/keys";
-import "../styles/stocks.scss";
 import Loader from "react-loader";
 import ArrowUpward from "rmdi/lib/ArrowUpward";
 import ArrowDownward from "rmdi/lib/ArrowDownward";
 import PriorityHigh from "rmdi/lib/PriorityHigh";
 import ThumbUp from "rmdi/lib/ThumbUp";
 import ThumbDown from "rmdi/lib/ThumbDown";
+import { keys } from "../config/keys";
+import "../styles/stocks.scss";
 
 class Stocks extends Component {
   constructor() {
