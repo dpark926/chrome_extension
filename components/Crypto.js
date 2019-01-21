@@ -6,7 +6,9 @@ import "../styles/crypto.scss";
 class Crypto extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      timeTab: "24h"
+    };
   }
 
   componentDidMount() {
@@ -20,27 +22,46 @@ class Crypto extends Component {
       .catch(err => console.log(err));
   }
 
+  selectTimeTab = time => {
+    this.setState({ timeTab: time });
+  };
+
   render() {
-    const { cryptoData } = this.state;
+    const { cryptoData, timeTab } = this.state;
     let totalValue;
     let gainLoss;
 
     if (cryptoData) {
       totalValue = Math.round(5.61712285 * cryptoData.ETH.USD * 100) / 100;
       gainLoss =
-        Math.round((5.61712285 * cryptoData.ETH.USD - 720) * 100) / 100;
+        Math.round((5.61712285 * cryptoData.ETH.USD - 704) * 100) / 100;
     }
 
     return (
-      <div className="crypto">
+      <div className="crypto bg-dark-gray">
         <div className="time-tab flex">
-          <div className={`col-4 center p1 ${false ? "white" : "light-gray"}`}>
+          <div
+            className={`time-tab-item col-4 center pointer p1 ${
+              timeTab === "1h" ? "bg-black" : "light-gray"
+            }`}
+            onClick={() => this.selectTimeTab("1h")}
+          >
             1h
           </div>
-          <div className={`col-4 center p1 ${false ? "white" : "light-gray"}`}>
-            24hr
+          <div
+            className={`time-tab-item col-4 center pointer p1 ${
+              timeTab === "24h" ? "bg-black" : "light-gray"
+            }`}
+            onClick={() => this.selectTimeTab("24h")}
+          >
+            24h
           </div>
-          <div className={`col-4 center p1 ${false ? "white" : "light-gray"}`}>
+          <div
+            className={`time-tab-item col-4 center pointer p1 ${
+              timeTab === "7d" ? "bg-black" : "light-gray"
+            }`}
+            onClick={() => this.selectTimeTab("7d")}
+          >
             7d
           </div>
         </div>
@@ -60,7 +81,7 @@ class Crypto extends Component {
                 <div className="crypto-item pt1 px1" key={idx}>
                   <div className="flex">
                     <span className="light-gray">{token}</span>
-                    <span className="flex-auto right-align pl2">
+                    <span className="flex-auto right-align nowrap pl2">
                       $ {cryptoData[token].USD}
                     </span>
                   </div>

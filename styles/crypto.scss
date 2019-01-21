@@ -11,3 +11,11 @@
 .time-tab {
   border-bottom: 1px solid $divider;
 }
+
+.time-tab-item {
+  border-right: 1px solid $divider;
+
+  &:hover {
+    color: $white;
+  }
+}

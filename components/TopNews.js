@@ -28,11 +28,11 @@ class TopNews extends Component {
     const { newsData } = this.state;
 
     return (
-      <div className="col-6">
+      <div className="news-section col-6">
         {newsData &&
           newsData.articles.map((news, idx) => {
             return (
-              <div key={idx} className="news-section p1">
+              <div key={idx} className="news-item p1">
                 <Link href={news.url}>
                   <a>{news.title}</a>
                 </Link>
