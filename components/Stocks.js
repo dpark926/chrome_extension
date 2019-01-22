@@ -34,8 +34,6 @@ class Stocks extends Component {
   render() {
     const { cryptoNewsData } = this.state;
 
-    console.log(cryptoNewsData);
-
     return (
       <div className="col-6">
         {!cryptoNewsData && (

@@ -32,9 +32,11 @@ class Crypto extends Component {
     let gainLoss;
 
     if (cryptoData) {
-      totalValue = Math.round(5.61712285 * cryptoData.ETH.USD * 100) / 100;
+      totalValue =
+        Math.round(5.61712285 * cryptoData.RAW.ETH.USD.PRICE * 100) / 100;
       gainLoss =
-        Math.round((5.61712285 * cryptoData.ETH.USD - 704) * 100) / 100;
+        Math.round((5.61712285 * cryptoData.RAW.ETH.USD.PRICE - 704) * 100) /
+        100;
     }
 
     return (
@@ -76,19 +78,32 @@ class Crypto extends Component {
         )}
         <div className="py1">
           {cryptoData &&
-            Object.keys(cryptoData).map((token, idx) => {
+            Object.keys(cryptoData.DISPLAY).map((token, idx) => {
               return (
                 <div className="crypto-item pt1 px1" key={idx}>
                   <div className="flex">
                     <span className="light-gray">{token}</span>
                     <span className="flex-auto right-align nowrap pl2">
-                      $ {cryptoData[token].USD}
+                      {cryptoData.DISPLAY[token].USD.PRICE}
                     </span>
                   </div>
                   <div
-                    className={`right-align ${gainLoss < 0 ? "red" : "green"}`}
+                    className={`right-align ${
+                      cryptoData.DISPLAY[token].USD.CHANGEPCT24HOUR.slice(
+                        0,
+                        1
+                      ) === "-"
+                        ? "red"
+                        : "green"
+                    }`}
                   >
-                    --
+                    {cryptoData ? (
+                      <div>{`${
+                        cryptoData.DISPLAY[token].USD.CHANGEPCT24HOUR
+                      } %`}</div>
+                    ) : (
+                      "--"
+                    )}
                   </div>
                 </div>
               );

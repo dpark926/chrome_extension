@@ -75,8 +75,6 @@ class Weather extends Component {
       newArr.push(fiveDayForecast[key]);
     }
 
-    console.log(weatherData);
-
     return (
       <div className="weather flex">
         {weatherData && (
