@@ -11,3 +11,15 @@
     background: $dark-gray;
   }
 }
+
+.finance-tab {
+  border-bottom: 1px solid $divider;
+}
+
+.finance-tab-item {
+  border-right: 1px solid $divider;
+
+  &:hover {
+    color: $white;
+  }
+}

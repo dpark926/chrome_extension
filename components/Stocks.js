@@ -3,7 +3,7 @@ import Link from "next/link";
 import Loader from "react-loader";
 import ArrowUpward from "rmdi/lib/ArrowUpward";
 import ArrowDownward from "rmdi/lib/ArrowDownward";
-import PriorityHigh from "rmdi/lib/PriorityHigh";
+import ReportProblem from "rmdi/lib/ReportProblem";
 import ThumbUp from "rmdi/lib/ThumbUp";
 import ThumbDown from "rmdi/lib/ThumbDown";
 import { keys } from "../config/keys";
@@ -12,7 +12,7 @@ import "../styles/stocks.scss";
 class Stocks extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { financeTab: "crypto" };
   }
 
   componentDidMount() {
@@ -31,18 +31,40 @@ class Stocks extends Component {
       .catch(err => console.log(err));
   }
 
+  selectFinanceTab = category => {
+    this.setState({ financeTab: category });
+  };
+
   render() {
-    const { cryptoNewsData } = this.state;
+    const { cryptoNewsData, financeTab } = this.state;
 
     return (
       <div className="col-6">
+        <div className="finance-tab flex">
+          <div
+            className={`finance-tab-item col-6 center pointer p1 ${
+              financeTab === "crypto" ? "bg-dark-gray" : "bg-black light-gray"
+            }`}
+            onClick={() => this.selectFinanceTab("crypto")}
+          >
+            Cryto
+          </div>
+          <div
+            className={`finance-tab-item col-6 center pointer p1 ${
+              financeTab === "stocks" ? "bg-dark-gray" : "bg-black light-gray"
+            }`}
+            onClick={() => this.selectFinanceTab("stocks")}
+          >
+            Stocks
+          </div>
+        </div>
         {!cryptoNewsData && (
           <div className="relative p4">
             <Loader color="#fff" />
           </div>
         )}
-
         {cryptoNewsData &&
+          financeTab === "crypto" &&
           cryptoNewsData.results.map((news, idx) => {
             return (
               <div key={idx} className="stocks-item p1">
@@ -56,19 +78,19 @@ class Stocks extends Component {
                   {news.votes.liked > 0 && (
                     <div className="flex pr2 green">
                       <ArrowUpward size={18} color="green" />
-                      {news.votes.liked}
+                      <span className="pl1">{news.votes.liked}</span>
                     </div>
                   )}
                   {news.votes.important > 0 && (
                     <div className="flex pr2 yellow">
-                      <PriorityHigh size={18} color="#daff00" />
-                      {news.votes.important}
+                      <ReportProblem size={18} color="#daff00" />
+                      <span className="pl1">{news.votes.important}</span>
                     </div>
                   )}
                   {news.votes.disliked > 0 && (
                     <div className="flex pr2 orange">
                       <ArrowDownward size={18} color="#ffa500" />
-                      {news.votes.disliked}
+                      <span className="pl1">{news.votes.disliked}</span>
                     </div>
                   )}
                   {news.votes.positive > 0 && (

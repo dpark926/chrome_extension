@@ -11,3 +11,15 @@
     background: $dark-gray;
   }
 }
+
+.category-tab {
+  border-bottom: 1px solid $divider;
+}
+
+.category-tab-item {
+  border-right: 1px solid $divider;
+
+  &:hover {
+    color: $white;
+  }
+}
