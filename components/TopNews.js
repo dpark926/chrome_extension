@@ -8,7 +8,7 @@ class TopNews extends Component {
   constructor() {
     super();
     this.state = {
-      categoryTab: "topnews"
+      categoryTab: "general"
     };
   }
 
@@ -29,6 +29,19 @@ class TopNews extends Component {
 
   selectCategoryTab = category => {
     this.setState({ categoryTab: category });
+
+    fetch(
+      `https://${
+        keys.newsAPI
+      }top-headlines?country=us&category=${category}&apiKey=${keys.newsAPIKey}`
+    )
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          newsData: data
+        })
+      )
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -39,9 +52,9 @@ class TopNews extends Component {
         <div className="category-tab flex">
           <div
             className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "topnews" ? "bg-dark-gray" : "bg-black light-gray"
+              categoryTab === "general" ? "bg-dark-gray" : "bg-black light-gray"
             }`}
-            onClick={() => this.selectCategoryTab("topnews")}
+            onClick={() => this.selectCategoryTab("general")}
           >
             Top News
           </div>
@@ -65,9 +78,11 @@ class TopNews extends Component {
           </div>
           <div
             className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "tech" ? "bg-dark-gray" : "bg-black light-gray"
+              categoryTab === "technology"
+                ? "bg-dark-gray"
+                : "bg-black light-gray"
             }`}
-            onClick={() => this.selectCategoryTab("tech")}
+            onClick={() => this.selectCategoryTab("technology")}
           >
             Tech
           </div>
@@ -78,7 +93,40 @@ class TopNews extends Component {
           </div>
         )}
         {newsData &&
-          categoryTab === "topnews" &&
+          categoryTab === "general" &&
+          newsData.articles.map((news, idx) => {
+            return (
+              <div key={idx} className="news-item p1">
+                <Link href={news.url}>
+                  <a target="_blank">{news.title}</a>
+                </Link>
+              </div>
+            );
+          })}
+        {newsData &&
+          categoryTab === "business" &&
+          newsData.articles.map((news, idx) => {
+            return (
+              <div key={idx} className="news-item p1">
+                <Link href={news.url}>
+                  <a target="_blank">{news.title}</a>
+                </Link>
+              </div>
+            );
+          })}
+        {newsData &&
+          categoryTab === "sports" &&
+          newsData.articles.map((news, idx) => {
+            return (
+              <div key={idx} className="news-item p1">
+                <Link href={news.url}>
+                  <a target="_blank">{news.title}</a>
+                </Link>
+              </div>
+            );
+          })}
+        {newsData &&
+          categoryTab === "technology" &&
           newsData.articles.map((news, idx) => {
             return (
               <div key={idx} className="news-item p1">
