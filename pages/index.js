@@ -14,7 +14,10 @@ class index extends Component {
 
   render() {
     return (
-      <div className="flex bg-black white">
+      <div
+        className="flex bg-black white absolute overflow-hidden col-12"
+        style={{ height: "100vh" }}
+      >
         <div className="flex-auto">
           <TimeDate />
           <Weather />

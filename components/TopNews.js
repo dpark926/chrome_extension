@@ -48,7 +48,7 @@ class TopNews extends Component {
     const { newsData, categoryTab } = this.state;
 
     return (
-      <div className="news-section col-6">
+      <div className="news-section col-6 relative">
         <div className="category-tab flex">
           <div
             className={`category-tab-item col-4 center pointer p1 ${
@@ -92,50 +92,61 @@ class TopNews extends Component {
             <Loader color="#fff" />
           </div>
         )}
-        {newsData &&
-          categoryTab === "general" &&
-          newsData.articles.map((news, idx) => {
-            return (
-              <div key={idx} className="news-item p1">
-                <Link href={news.url}>
-                  <a target="_blank">{news.title}</a>
-                </Link>
-              </div>
-            );
-          })}
-        {newsData &&
-          categoryTab === "business" &&
-          newsData.articles.map((news, idx) => {
-            return (
-              <div key={idx} className="news-item p1">
-                <Link href={news.url}>
-                  <a target="_blank">{news.title}</a>
-                </Link>
-              </div>
-            );
-          })}
-        {newsData &&
-          categoryTab === "sports" &&
-          newsData.articles.map((news, idx) => {
-            return (
-              <div key={idx} className="news-item p1">
-                <Link href={news.url}>
-                  <a target="_blank">{news.title}</a>
-                </Link>
-              </div>
-            );
-          })}
-        {newsData &&
-          categoryTab === "technology" &&
-          newsData.articles.map((news, idx) => {
-            return (
-              <div key={idx} className="news-item p1">
-                <Link href={news.url}>
-                  <a target="_blank">{news.title}</a>
-                </Link>
-              </div>
-            );
-          })}
+        <div
+          className="absolute"
+          style={{
+            height: "calc(100vh - 260px)",
+            borderRight: "1px solid #9d9d9f",
+            right: "-1px"
+          }}
+        >
+          <div className="overflow-scroll" style={{ height: "100%" }}>
+            {newsData &&
+              categoryTab === "general" &&
+              newsData.articles.map((news, idx) => {
+                return (
+                  <div key={idx} className="news-item p1">
+                    <Link href={news.url}>
+                      <a target="_blank">{news.title}</a>
+                    </Link>
+                  </div>
+                );
+              })}
+            {newsData &&
+              categoryTab === "business" &&
+              newsData.articles.map((news, idx) => {
+                return (
+                  <div key={idx} className="news-item p1">
+                    <Link href={news.url}>
+                      <a target="_blank">{news.title}</a>
+                    </Link>
+                  </div>
+                );
+              })}
+            {newsData &&
+              categoryTab === "sports" &&
+              newsData.articles.map((news, idx) => {
+                return (
+                  <div key={idx} className="news-item p1">
+                    <Link href={news.url}>
+                      <a target="_blank">{news.title}</a>
+                    </Link>
+                  </div>
+                );
+              })}
+            {newsData &&
+              categoryTab === "technology" &&
+              newsData.articles.map((news, idx) => {
+                return (
+                  <div key={idx} className="news-item p1">
+                    <Link href={news.url}>
+                      <a target="_blank">{news.title}</a>
+                    </Link>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
       </div>
     );
   }

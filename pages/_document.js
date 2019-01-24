@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <html>
+      <html className="bg-black">
         <Head>
           <style>{`body { margin: 0 } /* custom! */`}</style>
           <link

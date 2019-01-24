@@ -89,12 +89,18 @@ class Weather extends Component {
       for (let i = 0; i < forecastData.list.length; i++) {
         let forecast = forecastData.list[i];
         let date = forecast.dt_txt.slice(0, 10);
+        let time = forecast.dt_txt.slice(11, 13);
 
         if (fiveDayForecast[date]) {
           if (fiveDayForecast[date].high > forecast.main.temp) {
             fiveDayForecast[date].low = forecast.main.temp;
           } else if (fiveDayForecast[date].high < forecast.main.temp) {
             fiveDayForecast[date].high = forecast.main.temp;
+          }
+          console.log(time);
+          if (time === "15") {
+            fiveDayForecast[date].description = forecast.weather[0].description;
+            fiveDayForecast[date].icon = forecast.weather[0].icon;
           }
         } else {
           fiveDayForecast[date] = {
@@ -107,6 +113,8 @@ class Weather extends Component {
         }
       }
     }
+
+    console.log(forecastData);
 
     for (let key in fiveDayForecast) {
       newArr.push(fiveDayForecast[key]);
