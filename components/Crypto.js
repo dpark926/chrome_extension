@@ -33,9 +33,9 @@ class Crypto extends Component {
 
     if (cryptoData) {
       totalValue =
-        Math.round(5.61712285 * cryptoData.RAW.ETH.USD.PRICE * 100) / 100;
+        Math.round(5.41461182 * cryptoData.RAW.ETH.USD.PRICE * 100) / 100;
       gainLoss =
-        Math.round((5.61712285 * cryptoData.RAW.ETH.USD.PRICE - 704) * 100) /
+        Math.round((5.41461182 * cryptoData.RAW.ETH.USD.PRICE - 754.02) * 100) /
         100;
     }
 

@@ -29,15 +29,15 @@ class TimeDate extends Component {
 
   renderTime = () => {
     const { hour, minute, second } = this.state;
-    const isHourSingle = hour % 12 < 10 ? "0" : "";
+    const isHourSingle = hour % 12 < 10 && hour !== 0 ? "0" : "";
     const isMinuteSingle = minute < 10 ? "0" : "";
     const isAM = hour < 11;
 
     return (
       <div>
-        {`${isHourSingle}${hour % 12}:${isMinuteSingle}${minute} ${
-          isAM ? "AM" : "PM"
-        }`}
+        {`${isHourSingle}${
+          hour % 12 === 0 ? "12" : hour % 12
+        }:${isMinuteSingle}${minute} ${isAM ? "AM" : "PM"}`}
       </div>
     );
   };
