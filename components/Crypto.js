@@ -28,6 +28,7 @@ class Crypto extends Component {
 
   render() {
     const { cryptoData, timeTab } = this.state;
+    const { toggleCryptoModal } = this.props;
     let totalValue;
     let gainLoss;
 
@@ -69,7 +70,9 @@ class Crypto extends Component {
         </div>
         {cryptoData && (
           <div className="px1">
-            <h4 className="m0 pt1 light-gray">My Value: </h4>
+            <h4 className="m0 pt1 light-gray" onClick={toggleCryptoModal}>
+              My Value:{" "}
+            </h4>
             <h2 className="m0 pt1">$ {totalValue}</h2>
             <div className={`right-align ${gainLoss < 0 ? "red" : "green"}`}>
               $ {gainLoss}
