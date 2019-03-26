@@ -7,7 +7,8 @@ class Crypto extends Component {
   constructor() {
     super();
     this.state = {
-      timeTab: "24h"
+      timeTab: "24h",
+      cryptoModalOpen: false
     };
   }
 
@@ -26,9 +27,13 @@ class Crypto extends Component {
     this.setState({ timeTab: time });
   };
 
+  toggleCryptoModal = () => {
+    const { cryptoModalOpen } = this.state;
+    this.setState({ cryptoModalOpen: !cryptoModalOpen });
+  };
+
   render() {
-    const { cryptoData, timeTab } = this.state;
-    const { toggleCryptoModal } = this.props;
+    const { cryptoData, timeTab, cryptoModalOpen } = this.state;
     let totalValue;
     let gainLoss;
 
@@ -41,7 +46,7 @@ class Crypto extends Component {
     }
 
     return (
-      <div className="crypto bg-dark-gray">
+      <div className="crypto bg-dark-gray" style={{ width: "160px" }}>
         <div className="time-tab flex">
           <div
             className={`time-tab-item col-4 center pointer p1 ${
@@ -70,7 +75,7 @@ class Crypto extends Component {
         </div>
         {cryptoData && (
           <div className="px1">
-            <h4 className="m0 pt1 light-gray" onClick={toggleCryptoModal}>
+            <h4 className="m0 pt1 light-gray" onClick={this.toggleCryptoModal}>
               My Value:{" "}
             </h4>
             <h2 className="m0 pt1">$ {totalValue}</h2>
@@ -79,38 +84,70 @@ class Crypto extends Component {
             </div>
           </div>
         )}
-        <div className="py1">
-          {cryptoData &&
-            Object.keys(cryptoData.DISPLAY).map((token, idx) => {
-              return (
-                <div className="crypto-item pt1 px1" key={idx}>
-                  <div className="flex">
-                    <span className="light-gray">{token}</span>
-                    <span className="flex-auto right-align nowrap pl2">
-                      {cryptoData.DISPLAY[token].USD.PRICE}
-                    </span>
-                  </div>
-                  <div
-                    className={`right-align ${
-                      cryptoData.DISPLAY[token].USD.CHANGEPCT24HOUR.slice(
-                        0,
-                        1
-                      ) === "-"
-                        ? "red"
-                        : "green"
-                    }`}
-                  >
-                    {cryptoData ? (
-                      <div>{`${
-                        cryptoData.DISPLAY[token].USD.CHANGEPCT24HOUR
-                      } %`}</div>
-                    ) : (
-                      "--"
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+        <div
+          className="absolute"
+          style={{
+            height: "calc(100vh - 110px)",
+            width: "160px"
+          }}
+        >
+          <div className="overflow-scroll" style={{ height: "100%" }}>
+            <div className="py1">
+              {cryptoData &&
+                Object.keys(cryptoData.DISPLAY).map((token, idx) => {
+                  return (
+                    <div className="crypto-item pt1 px1" key={idx}>
+                      <div className="flex">
+                        <div className="col-4">
+                          <span className="light-gray">{token}</span>
+                        </div>
+                        {cryptoModalOpen ? (
+                          <div className="flex flex-column col-8">
+                            <input
+                              className="crypto-input bg-dark-gray rounded white px1 h6"
+                              type="text"
+                              name="btc"
+                              placeholder="Price"
+                              autoComplete="off"
+                            />
+                            <input
+                              className="crypto-input bg-dark-gray rounded white px1 h6"
+                              type="text"
+                              name="btc"
+                              placeholder="Amount"
+                              autoComplete="off"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex-auto col-8">
+                            <div className="right-align nowrap pl2">
+                              {cryptoData.DISPLAY[token].USD.PRICE}
+                            </div>
+                            <div
+                              className={`right-align ${
+                                cryptoData.DISPLAY[
+                                  token
+                                ].USD.CHANGEPCT24HOUR.slice(0, 1) === "-"
+                                  ? "red"
+                                  : "green"
+                              }`}
+                            >
+                              {cryptoData ? (
+                                <div>{`${
+                                  cryptoData.DISPLAY[token].USD.CHANGEPCT24HOUR
+                                } %`}</div>
+                              ) : (
+                                "--"
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
         </div>
       </div>
     );

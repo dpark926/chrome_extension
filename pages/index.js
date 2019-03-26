@@ -9,16 +9,11 @@ import TimeDate from "../components/TimeDate";
 class index extends Component {
   constructor() {
     super();
-    this.state = { weatherCityModalOpen: false, cryptoModalOpen: false };
+    this.state = { weatherCityModalOpen: false };
   }
 
-  toggleCryptoModal = () => {
-    const { cryptoModalOpen } = this.state;
-    this.setState({ cryptoModalOpen: !cryptoModalOpen });
-  };
-
   render() {
-    const { weatherCityModalOpen, cryptoModalOpen } = this.state;
+    const { weatherCityModalOpen } = this.state;
 
     return (
       <div
@@ -33,18 +28,7 @@ class index extends Component {
             <Stocks />
           </div>
         </div>
-        <Crypto toggleCryptoModal={this.toggleCryptoModal} />
-        {cryptoModalOpen && (
-          <div className="absolute col-12" style={{ height: "100%" }}>
-            <div>
-              <form>
-                <label>BTC</label>
-                <input type="text" name="btc" />
-                <input type="submit" value="Submit" />
-              </form>
-            </div>
-          </div>
-        )}
+        <Crypto />
       </div>
     );
   }
