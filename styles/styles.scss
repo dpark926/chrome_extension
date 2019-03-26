@@ -12,6 +12,12 @@
   cursor: pointer;
 }
 
+.hover {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 a {
   text-decoration: none;
   color: $light-gray;
@@ -56,4 +62,8 @@ a {
 
 .bg-dark-gray {
   background: $dark-gray;
+}
+
+.bg-blue {
+  background: $blue;
 }

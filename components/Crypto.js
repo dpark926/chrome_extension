@@ -8,7 +8,8 @@ class Crypto extends Component {
     super();
     this.state = {
       timeTab: "24h",
-      cryptoModalOpen: false
+      cryptoModalOpen: false,
+      portfolio: { ETH: { "ETH-price": "754.02", "ETH-amount": "5.41461182" } }
     };
   }
 
@@ -20,6 +21,7 @@ class Crypto extends Component {
           cryptoData: data
         })
       )
+      .then(this.onSubmit)
       .catch(err => console.log(err));
   }
 
@@ -32,18 +34,62 @@ class Crypto extends Component {
     this.setState({ cryptoModalOpen: !cryptoModalOpen });
   };
 
-  render() {
-    const { cryptoData, timeTab, cryptoModalOpen } = this.state;
+  handleChange = e => {
+    const { portfolio } = this.state;
+    const clone = Object.assign({}, portfolio);
+    const token = e.target.name.split("-")[0];
+
+    if (clone[token]) {
+      clone[token][e.target.name] = e.target.value;
+    } else {
+      clone[token] = { [e.target.name]: e.target.value };
+    }
+
+    this.setState({ portfolio: clone });
+  };
+
+  onSubmit = () => {
+    const { cryptoData, portfolio } = this.state;
     let totalValue;
     let gainLoss;
 
     if (cryptoData) {
-      totalValue =
-        Math.round(5.41461182 * cryptoData.RAW.ETH.USD.PRICE * 100) / 100;
-      gainLoss =
-        Math.round((5.41461182 * cryptoData.RAW.ETH.USD.PRICE - 754.02) * 100) /
-        100;
+      for (let key in portfolio) {
+        const priceKey = key + "-price";
+        const amountKey = key + "-amount";
+        const tokenPrice = parseFloat(portfolio[key][priceKey]);
+        const tokenAmount = parseFloat(portfolio[key][amountKey]);
+        const currentTokenPrice = cryptoData.RAW[key].USD.PRICE;
+
+        if (tokenPrice && tokenAmount) {
+          totalValue = Math.round(tokenAmount * currentTokenPrice * 100) / 100;
+          gainLoss =
+            Math.round((tokenAmount * currentTokenPrice - tokenPrice) * 100) /
+            100;
+        } else {
+          return false;
+        }
+      }
     }
+
+    this.setState({
+      totalValue: totalValue,
+      gainLoss: gainLoss,
+      cryptoModalOpen: false
+    });
+  };
+
+  render() {
+    const {
+      totalValue,
+      gainLoss,
+      cryptoData,
+      timeTab,
+      cryptoModalOpen,
+      portfolio
+    } = this.state;
+
+    console.log(portfolio);
 
     return (
       <div className="crypto bg-dark-gray" style={{ width: "160px" }}>
@@ -106,15 +152,25 @@ class Crypto extends Component {
                             <input
                               className="crypto-input bg-dark-gray rounded white px1 h6"
                               type="text"
-                              name="btc"
-                              placeholder="Price"
+                              name={`${token}-price`}
+                              placeholder={
+                                portfolio[token]
+                                  ? "$ " + portfolio[token][`${token}-price`]
+                                  : "Price"
+                              }
+                              onChange={this.handleChange}
                               autoComplete="off"
                             />
                             <input
                               className="crypto-input bg-dark-gray rounded white px1 h6"
                               type="text"
-                              name="btc"
-                              placeholder="Amount"
+                              name={`${token}-amount`}
+                              placeholder={
+                                portfolio[token]
+                                  ? portfolio[token][`${token}-amount`]
+                                  : "Amount"
+                              }
+                              onChange={this.handleChange}
                               autoComplete="off"
                             />
                           </div>
@@ -149,6 +205,25 @@ class Crypto extends Component {
             </div>
           </div>
         </div>
+        {cryptoModalOpen && (
+          <div
+            className="absolute col-12 py1 flex flex-column bg-dark-gray"
+            style={{ width: "160px", bottom: 0 }}
+          >
+            <button
+              className="mx1 mb1 white pointer bg-dark-gray py1 rounded hover"
+              onClick={this.toggleCryptoModal}
+            >
+              Cancel
+            </button>
+            <button
+              className="mx1 white pointer bg-blue border-none py1 rounded hover"
+              onClick={this.onSubmit}
+            >
+              Confirm
+            </button>
+          </div>
+        )}
       </div>
     );
   }
