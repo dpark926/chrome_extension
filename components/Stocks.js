@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
+import ControlPoint from "rmdi/lib/ControlPoint";
 import ArrowUpward from "rmdi/lib/ArrowUpward";
 import ArrowDownward from "rmdi/lib/ArrowDownward";
 import ReportProblem from "rmdi/lib/ReportProblem";
@@ -12,7 +13,7 @@ import "../styles/stocks.scss";
 class Stocks extends Component {
   constructor() {
     super();
-    this.state = { financeTab: "crypto" };
+    this.state = { financeTab: "stocks", goalsToday: [], goalsTomorrow: [] };
   }
 
   componentDidMount() {
@@ -35,9 +36,59 @@ class Stocks extends Component {
     this.setState({ financeTab: category });
   };
 
-  render() {
-    const { cryptoNewsData, financeTab } = this.state;
+  toggleGoalModal = type => {
+    const { todayModalOpen, tomorrowModalOpen } = this.state;
 
+    switch (type) {
+      case "today":
+        this.setState({ todayModalOpen: !todayModalOpen });
+        break;
+      case "tomorrow":
+        this.setState({ tomorrowModalOpen: !tomorrowModalOpen });
+        break;
+      default:
+        return;
+    }
+  };
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+    console.log(e.target.value);
+  };
+
+  handleSubmit = type => {
+    const { goalsToday, goalsTomorrow, newGoal } = this.state;
+    let clone = [];
+
+    switch (type) {
+      case "today":
+        clone = goalsToday.slice();
+        clone.push(newGoal);
+        this.setState({ goalsToday: clone });
+        break;
+      case "tomorrow":
+        clone = goalsTomorrow.slice();
+        clone.push(newGoal);
+        this.setState({ goalsTomorrow: clone });
+        break;
+      default:
+        return;
+    }
+    this.toggleGoalModal(type);
+  };
+
+  render() {
+    const {
+      cryptoNewsData,
+      financeTab,
+      todayModalOpen,
+      tomorrowModalOpen,
+      goalsToday,
+      goalsTomorrow
+    } = this.state;
+
+    console.log(goalsToday);
+    console.log(goalsTomorrow);
     return (
       <div className="col-6 relative">
         <div className="finance-tab flex">
@@ -63,7 +114,10 @@ class Stocks extends Component {
             <Loader color="#fff" />
           </div>
         )}
-        <div className="absolute" style={{ height: "calc(100vh - 260px)" }}>
+        <div
+          className="absolute col-12"
+          style={{ height: "calc(100vh - 260px)" }}
+        >
           <div className="overflow-scroll" style={{ height: "100%" }}>
             {cryptoNewsData &&
               financeTab === "crypto" &&
@@ -113,6 +167,128 @@ class Stocks extends Component {
                   </div>
                 );
               })}
+            {financeTab === "stocks" && (
+              <div className="flex light-gray" style={{ height: "100%" }}>
+                <div className="goal-section-left flex flex-column col-6">
+                  <label className="p1">
+                    <input className="mr1" type="checkbox" name="jobs" />QT/Meditate
+                  </label>
+                  <label className="p1 light-gray">
+                    <input className="mr1" type="checkbox" name="jobs" />Apply
+                    to jobs
+                  </label>
+                  <label className="p1 light-gray">
+                    <input className="mr1" type="checkbox" name="exercise" />Exercise
+                  </label>
+                  <label className="p1 light-gray">
+                    <input className="mr1" type="checkbox" name="study" />Study
+                  </label>
+                  <label className="p1 light-gray">
+                    <input className="mr1" type="checkbox" name="work" />Work on
+                    Apps
+                  </label>
+                  <label className="p1 light-gray">
+                    <input className="mr1" type="checkbox" name="read" />Read
+                  </label>
+                </div>
+                <div className="flex flex-column col-6">
+                  <div className="todays-goal-section">
+                    <div className="p1 white center">GOALS FOR TODAY</div>
+                    {goalsToday.length < 1 ? (
+                      <p className="center">(Nothing for today)</p>
+                    ) : (
+                      <ol className="py1 pl3">
+                        {goalsToday.map((goal, idx) => {
+                          return <li>{goal}</li>;
+                        })}
+                      </ol>
+                    )}
+                    {todayModalOpen ? (
+                      <div className="center">
+                        <input
+                          className="bg-dark-gray border-divider rounded white px1 my1 h6"
+                          type="text"
+                          name="newGoal"
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                        />
+                        <div className="pt1">
+                          <button
+                            className="mx1 mb1 white pointer bg-dark-gray py1 rounded hover"
+                            onClick={() => this.toggleGoalModal("today")}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="mx1 white pointer bg-blue border-none py1 rounded hover"
+                            onClick={() => this.handleSubmit("today")}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="center mb2">
+                        <ControlPoint
+                          className="pt1 pointer hover"
+                          size={18}
+                          color="lightgray"
+                          onClick={() => this.toggleGoalModal("today")}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <div>
+                      <div className="p1 white center">GOALS FOR TOMORROW</div>
+                      {goalsTomorrow.length !== 0 ? (
+                        <ol className="py1 pl3">
+                          {goalsTomorrow.map((goal, idx) => {
+                            return <li>{goal}</li>;
+                          })}
+                        </ol>
+                      ) : (
+                        <p className="center">(Nothing for tomorrow)</p>
+                      )}
+                    </div>
+                    {tomorrowModalOpen ? (
+                      <div className="center">
+                        <input
+                          className="bg-dark-gray border-divider rounded white px1 my1 h6"
+                          type="text"
+                          name="newGoal"
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                        />
+                        <div className="pt1">
+                          <button
+                            className="mx1 mb1 white pointer bg-dark-gray py1 rounded hover"
+                            onClick={() => this.toggleGoalModal("tomorrow")}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="mx1 white pointer bg-blue border-none py1 rounded hover"
+                            onClick={() => this.handleSubmit("tomorrow")}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="center">
+                        <ControlPoint
+                          className="pt1 pointer hover"
+                          size={18}
+                          color="lightgray"
+                          onClick={() => this.toggleGoalModal("tomorrow")}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
