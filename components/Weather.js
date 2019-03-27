@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
+import Settings from "rmdi/lib/Settings";
 import { Days } from "../src/date";
 import { weatherIcons } from "../src/weatherIcons";
 import { keys } from "../config/keys";
@@ -15,12 +16,29 @@ class Weather extends Component {
   }
 
   componentDidMount() {
-    const { currentZip } = this.state;
+    this.fetchWeatherData();
+  }
 
+  toggleWeatherModal = () => {
+    const { weatherModalOpen } = this.state;
+    this.setState({ weatherModalOpen: !weatherModalOpen });
+  };
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.fetchWeatherData(this.state.zipCode);
+    this.toggleWeatherModal();
+  };
+
+  fetchWeatherData = (zipCode = this.state.currentZip) => {
     fetch(
       `https://${keys.openWeatherMapAPI}weather?appid=${
         keys.openWeatherMapAPIKey
-      }&units=imperial&zip=${currentZip},us`
+      }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())
       .then(data =>
@@ -33,7 +51,7 @@ class Weather extends Component {
     fetch(
       `https://${keys.openWeatherMapAPI}forecast?appid=${
         keys.openWeatherMapAPIKey
-      }&units=imperial&zip=${currentZip},us`
+      }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())
       .then(data =>
@@ -42,10 +60,10 @@ class Weather extends Component {
         })
       )
       .catch(err => console.log(err));
-  }
+  };
 
   render() {
-    const { weatherData, forecastData } = this.state;
+    const { weatherData, forecastData, weatherModalOpen } = this.state;
     const fiveDayForecast = {};
     let newArr = [];
 
@@ -77,38 +95,71 @@ class Weather extends Component {
       }
     }
 
-    console.log(forecastData);
-
     for (let key in fiveDayForecast) {
       newArr.push(fiveDayForecast[key]);
     }
 
     return (
       <div className="weather flex">
-        {weatherData && (
-          <div className="center p1 flex flex-column justify-center col-2">
-            <div>{weatherData.name}</div>
-            <div className="capitalize light-gray">
-              {weatherData.weather[0].description}
-            </div>
-            <div>
-              <img
-                src={weatherIcons[weatherData.weather[0].icon]}
-                width={52}
-                height={52}
+        {weatherModalOpen && (
+          <div className="relative center p1 col-2">
+            <Settings
+              className="absolute p1 pointer hover"
+              size={18}
+              color="lightgray"
+              onClick={this.toggleWeatherModal}
+              style={{ top: 0, right: 0 }}
+            />
+            <form
+              className="flex flex-column justify-center py3"
+              onSubmit={this.handleSubmit}
+            >
+              <input
+                className="bg-dark-gray border-divider center rounded white py1 mx2 h6"
+                type="text"
+                name="zipCode"
+                placeholder="Enter Zip Code"
+                onChange={this.handleChange}
               />
-            </div>
-            <div className="h2">{Math.round(weatherData.main.temp)}°</div>
-            <p className="flex justify-center m0 light-gray">
-              <span className="p1">
-                {Math.round(weatherData.main.temp_max)}°
-              </span>
-              <span className="p1">
-                {Math.round(weatherData.main.temp_min)}°
-              </span>
-            </p>
+              <input
+                type="submit"
+                className="white pointer bg-blue border-none py1 my1 mx2 h6 rounded hover"
+              />
+            </form>
           </div>
         )}
+        {weatherData &&
+          !weatherModalOpen && (
+            <div className="relative center p1 flex flex-column justify-center col-2">
+              <Settings
+                className="absolute p1 pointer hover"
+                size={18}
+                color="lightgray"
+                onClick={this.toggleWeatherModal}
+                style={{ top: 0, right: 0 }}
+              />
+              <div>{weatherData.name}</div>
+              <div className="capitalize light-gray">
+                {weatherData.weather[0].description}
+              </div>
+              <div>
+                <img
+                  src={weatherIcons[weatherData.weather[0].icon]}
+                  width={52}
+                  height={52}
+                />
+              </div>
+              <div className="h2">{Math.round(weatherData.main.temp)}°</div>
+              <p className="flex justify-center m0 light-gray">
+                <span className="p1">
+                  {Math.round(weatherData.main.temp_max)}°
+                </span>
+                <span className="p1">
+                  {Math.round(weatherData.main.temp_min)}°
+                </span>
+              </p>
+            </div>
+          )}
         <div className="flex flex-auto justify-center col-10">
           {forecastData &&
             newArr &&

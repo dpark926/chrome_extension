@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
+import Settings from "rmdi/lib/Settings";
 import { keys } from "../config/keys";
 import "../styles/crypto.scss";
 
@@ -8,7 +9,6 @@ class Crypto extends Component {
     super();
     this.state = {
       timeTab: "24h",
-      cryptoModalOpen: false,
       portfolio: { ETH: { "ETH-price": "754.02", "ETH-amount": "5.41461182" } }
     };
   }
@@ -89,8 +89,6 @@ class Crypto extends Component {
       portfolio
     } = this.state;
 
-    console.log(portfolio);
-
     return (
       <div className="crypto bg-dark-gray" style={{ width: "160px" }}>
         <div className="time-tab flex">
@@ -121,9 +119,15 @@ class Crypto extends Component {
         </div>
         {cryptoData && (
           <div className="px1">
-            <h4 className="m0 pt1 light-gray" onClick={this.toggleCryptoModal}>
-              My Value:{" "}
-            </h4>
+            <div className="flex items-center">
+              <h4 className="flex-auto m0 pt1 light-gray">My Value: </h4>
+              <Settings
+                className="pt1 pointer hover"
+                size={18}
+                color="lightgray"
+                onClick={this.toggleCryptoModal}
+              />
+            </div>
             <h2 className="m0 pt1">$ {totalValue}</h2>
             <div className={`right-align ${gainLoss < 0 ? "red" : "green"}`}>
               $ {gainLoss}
@@ -150,7 +154,7 @@ class Crypto extends Component {
                         {cryptoModalOpen ? (
                           <div className="flex flex-column col-8">
                             <input
-                              className="crypto-input bg-dark-gray rounded white px1 h6"
+                              className="bg-dark-gray border-divider right-align rounded white px1 h6"
                               type="text"
                               name={`${token}-price`}
                               placeholder={
@@ -162,7 +166,7 @@ class Crypto extends Component {
                               autoComplete="off"
                             />
                             <input
-                              className="crypto-input bg-dark-gray rounded white px1 h6"
+                              className="bg-dark-gray border-divider right-align rounded white px1 h6"
                               type="text"
                               name={`${token}-amount`}
                               placeholder={
