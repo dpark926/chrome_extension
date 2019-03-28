@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
 import ControlPoint from "rmdi/lib/ControlPoint";
+import Delete from "rmdi/lib/Delete";
 import ArrowUpward from "rmdi/lib/ArrowUpward";
 import ArrowDownward from "rmdi/lib/ArrowDownward";
 import ReportProblem from "rmdi/lib/ReportProblem";
@@ -77,6 +78,32 @@ class Stocks extends Component {
     this.toggleGoalModal(type);
   };
 
+  handleDelete = (type, goalToDelete) => {
+    const { goalsToday, goalsTomorrow } = this.state;
+
+    let clone = [];
+    let newClone = [];
+
+    switch (type) {
+      case "today":
+        clone = goalsToday.slice();
+        newClone = clone.filter(goal => {
+          return goal !== goalToDelete;
+        });
+        this.setState({ goalsToday: newClone });
+        break;
+      case "tomorrow":
+        clone = goalsTomorrow.slice();
+        newClone = clone.filter(goal => {
+          return goal !== goalToDelete;
+        });
+        this.setState({ goalsTomorrow: newClone });
+        break;
+      default:
+        return;
+    }
+  };
+
   render() {
     const {
       cryptoNewsData,
@@ -87,8 +114,6 @@ class Stocks extends Component {
       goalsTomorrow
     } = this.state;
 
-    console.log(goalsToday);
-    console.log(goalsTomorrow);
     return (
       <div className="col-6 relative">
         <div className="finance-tab flex">
@@ -197,11 +222,30 @@ class Stocks extends Component {
                     {goalsToday.length < 1 ? (
                       <p className="center">(Nothing for today)</p>
                     ) : (
-                      <ol className="py1 pl3">
+                      <div className="flex flex-column">
                         {goalsToday.map((goal, idx) => {
-                          return <li>{goal}</li>;
+                          return (
+                            <div className="flex">
+                              <label className="flex-auto p1 light-gray">
+                                <input
+                                  className="mr1"
+                                  type="checkbox"
+                                  name="read"
+                                />
+                                {goal}
+                              </label>
+                              <Delete
+                                className="icon pt1 mr1 pointer hover"
+                                size={18}
+                                color="lightgray"
+                                onClick={() => {
+                                  this.handleDelete("today", goal);
+                                }}
+                              />
+                            </div>
+                          );
                         })}
-                      </ol>
+                      </div>
                     )}
                     {todayModalOpen ? (
                       <div className="center">
@@ -242,9 +286,21 @@ class Stocks extends Component {
                     <div>
                       <div className="p1 white center">GOALS FOR TOMORROW</div>
                       {goalsTomorrow.length !== 0 ? (
-                        <ol className="py1 pl3">
+                        <ol className="py1 pl3 m0">
                           {goalsTomorrow.map((goal, idx) => {
-                            return <li>{goal}</li>;
+                            return (
+                              <div className="flex">
+                                <li className="flex-auto p1">{goal}</li>
+                                <Delete
+                                  className="icon pt1 mr1 pointer hover"
+                                  size={18}
+                                  color="lightgray"
+                                  onClick={() => {
+                                    this.handleDelete("tomorrow", goal);
+                                  }}
+                                />
+                              </div>
+                            );
                           })}
                         </ol>
                       ) : (
