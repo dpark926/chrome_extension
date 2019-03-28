@@ -14,7 +14,7 @@ import "../styles/stocks.scss";
 class Stocks extends Component {
   constructor() {
     super();
-    this.state = { financeTab: "stocks", goalsToday: [], goalsTomorrow: [] };
+    this.state = { financeTab: "crypto", goalsToday: [], goalsTomorrow: [] };
   }
 
   componentDidMount() {
@@ -133,6 +133,14 @@ class Stocks extends Component {
           >
             Stocks
           </div>
+          <div
+            className={`finance-tab-item col-6 center pointer p1 ${
+              financeTab === "goals" ? "bg-dark-gray" : "bg-black light-gray"
+            }`}
+            onClick={() => this.selectFinanceTab("goals")}
+          >
+            Goals
+          </div>
         </div>
         {!cryptoNewsData && (
           <div className="relative p4">
@@ -192,35 +200,64 @@ class Stocks extends Component {
                   </div>
                 );
               })}
-            {financeTab === "stocks" && (
+            {financeTab === "goals" && (
               <div className="flex light-gray" style={{ height: "100%" }}>
                 <div className="goal-section-left flex flex-column col-6">
+                  <h4 className="p1 m0 white center">DAILY GOALS</h4>
                   <label className="p1">
-                    <input className="mr1" type="checkbox" name="jobs" />QT/Meditate
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="jobs"
+                    />
+                    <span>QT/Meditate</span>
                   </label>
                   <label className="p1 light-gray">
-                    <input className="mr1" type="checkbox" name="jobs" />Apply
-                    to jobs
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="jobs"
+                    />
+                    <span>Apply to jobs</span>
                   </label>
                   <label className="p1 light-gray">
-                    <input className="mr1" type="checkbox" name="exercise" />Exercise
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="exercise"
+                    />
+                    <span>Exercise</span>
                   </label>
                   <label className="p1 light-gray">
-                    <input className="mr1" type="checkbox" name="study" />Study
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="study"
+                    />
+                    <span>Study</span>
                   </label>
                   <label className="p1 light-gray">
-                    <input className="mr1" type="checkbox" name="work" />Work on
-                    Apps
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="work"
+                    />
+                    <span>Work on Apps</span>
                   </label>
                   <label className="p1 light-gray">
-                    <input className="mr1" type="checkbox" name="read" />Read
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="read"
+                    />
+                    <span>Read</span>
                   </label>
                 </div>
                 <div className="flex flex-column col-6">
                   <div className="todays-goal-section">
                     <div className="p1 white center">GOALS FOR TODAY</div>
                     {goalsToday.length < 1 ? (
-                      <p className="center">(Nothing for today)</p>
+                      <h4 className="m0 center">(Nothing for today)</h4>
                     ) : (
                       <div className="flex flex-column">
                         {goalsToday.map((goal, idx) => {
@@ -228,11 +265,11 @@ class Stocks extends Component {
                             <div className="flex">
                               <label className="flex-auto p1 light-gray">
                                 <input
-                                  className="mr1"
+                                  className="strikethrough mr1"
                                   type="checkbox"
                                   name="read"
                                 />
-                                {goal}
+                                <span>{goal}</span>
                               </label>
                               <Delete
                                 className="icon pt1 mr1 pointer hover"
@@ -304,7 +341,7 @@ class Stocks extends Component {
                           })}
                         </ol>
                       ) : (
-                        <p className="center">(Nothing for tomorrow)</p>
+                        <h4 className="m0 center">(Nothing for tomorrow)</h4>
                       )}
                     </div>
                     {tomorrowModalOpen ? (
