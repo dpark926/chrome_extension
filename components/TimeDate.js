@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
+import Lock from "rmdi/lib/Lock";
+import Close from "rmdi/lib/Close";
 import { Months, Days } from "../src/date";
 
 class TimeDate extends Component {
@@ -42,11 +44,66 @@ class TimeDate extends Component {
     );
   };
 
+  toggleModal = e => {
+    const { modalOpen } = this.state;
+    this.setState({ modalOpen: !modalOpen });
+  };
+
   render() {
+    const { modalOpen } = this.state;
+
     return (
-      <div className="m1">
-        <span className="h2">{this.renderTime()}</span>
-        {this.renderDate()}
+      <div className="flex m1">
+        <div>
+          <span className="h2">{this.renderTime()}</span>
+          {this.renderDate()}
+        </div>
+        <div className="flex flex-auto justify-end">
+          <div className="m1 pointer hover light-gray hover-white">Sign Up</div>
+          <div
+            className="m1 pointer hover light-gray hover-white"
+            onClick={this.toggleModal}
+          >
+            Login
+          </div>
+        </div>
+        {modalOpen && (
+          <div
+            className="absolute col-12 flex flex-column justify-center items-center bg-modal z1"
+            style={{ height: "100%", top: 0, left: 0 }}
+          >
+            <div className="absolute bg-dark-gray py3 px4 border rounded z2">
+              <Close
+                className="absolute pointer hover"
+                size={24}
+                color="white"
+                style={{ top: "10px", right: "10px" }}
+                onClick={this.toggleModal}
+              />
+              <div className="center">
+                <Lock size={64} color="white" />
+                <h2>Login</h2>
+              </div>
+              <form className="flex flex-column z2">
+                <input
+                  className="my1 p1 rounded border-none"
+                  type="email"
+                  placeholder="Email"
+                />
+                <input
+                  className="my1 p1 rounded border-none"
+                  type="password"
+                  placeholder="Password"
+                />
+                <input
+                  className="white pointer bg-blue border-none rounded hover my1 p1"
+                  type="submit"
+                  value="Login"
+                />
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

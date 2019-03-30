@@ -208,7 +208,15 @@ class Stocks extends Component {
                     <input
                       className="strikethrough mr1"
                       type="checkbox"
-                      name="jobs"
+                      name="wake"
+                    />
+                    <span>Wake up at 6AM</span>
+                  </label>
+                  <label className="p1">
+                    <input
+                      className="strikethrough mr1"
+                      type="checkbox"
+                      name="meditate"
                     />
                     <span>QT/Meditate</span>
                   </label>

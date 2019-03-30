@@ -18,6 +18,12 @@
   }
 }
 
+.hover-white {
+  &:hover {
+    color: white;
+  }
+}
+
 .icon {
   min-width: 15px;
 }
@@ -78,4 +84,8 @@ a {
 
 .bg-blue {
   background: $blue;
+}
+
+.bg-modal {
+  background: rgba(0, 0, 0, 0.6);
 }
