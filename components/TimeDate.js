@@ -59,9 +59,11 @@ class TimeDate extends Component {
           {this.renderDate()}
         </div>
         <div className="flex flex-auto justify-end">
-          <div className="m1 pointer hover light-gray hover-white">Sign Up</div>
+          <div className="m1 px2 py1 border rounded pointer light-gray hover-white">
+            Sign Up
+          </div>
           <div
-            className="m1 pointer hover light-gray hover-white"
+            className="m1 p1 pointer light-gray hover-white"
             onClick={this.toggleModal}
           >
             Login
@@ -69,10 +71,10 @@ class TimeDate extends Component {
         </div>
         {modalOpen && (
           <div
-            className="absolute col-12 flex flex-column justify-center items-center bg-modal z1"
+            className="absolute col-12 flex flex-column justify-center items-center bg-modal light-gray z1"
             style={{ height: "100%", top: 0, left: 0 }}
           >
-            <div className="absolute bg-dark-gray py3 px4 border rounded z2">
+            <div className="absolute bg-dark-gray light-gray py3 px4 border rounded z2">
               <Close
                 className="absolute pointer hover"
                 size={24}
@@ -82,7 +84,7 @@ class TimeDate extends Component {
               />
               <div className="center">
                 <Lock size={64} color="white" />
-                <h2>Login</h2>
+                <h2 className="white">Login</h2>
               </div>
               <form className="flex flex-column z2">
                 <input

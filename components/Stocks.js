@@ -263,9 +263,9 @@ class Stocks extends Component {
                 </div>
                 <div className="flex flex-column col-6">
                   <div className="todays-goal-section">
-                    <div className="p1 white center">GOALS FOR TODAY</div>
+                    <h4 className="m0 p1 white center">GOALS FOR TODAY</h4>
                     {goalsToday.length < 1 ? (
-                      <h4 className="m0 center">(Nothing for today)</h4>
+                      <h4 className="m0 py1 center">(Nothing for today)</h4>
                     ) : (
                       <div className="flex flex-column">
                         {goalsToday.map((goal, idx) => {
@@ -329,7 +329,7 @@ class Stocks extends Component {
                   </div>
                   <div>
                     <div>
-                      <div className="p1 white center">GOALS FOR TOMORROW</div>
+                      <h4 className="m0 p1 white center">GOALS FOR TOMORROW</h4>
                       {goalsTomorrow.length !== 0 ? (
                         <ol className="py1 pl3 m0">
                           {goalsTomorrow.map((goal, idx) => {
@@ -349,7 +349,9 @@ class Stocks extends Component {
                           })}
                         </ol>
                       ) : (
-                        <h4 className="m0 center">(Nothing for tomorrow)</h4>
+                        <h4 className="m0 py1 center">
+                          (Nothing for tomorrow)
+                        </h4>
                       )}
                     </div>
                     {tomorrowModalOpen ? (
