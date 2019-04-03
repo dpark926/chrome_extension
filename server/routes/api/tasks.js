@@ -18,7 +18,8 @@ router.get("/", (req, res) => {
 // @access  Public
 router.post("/", (req, res) => {
   const newTask = new Task({
-    name: req.body.name
+    name: req.body.name,
+    goalDate: req.body.goalDate
   });
 
   newTask.save().then(task => res.json(task));

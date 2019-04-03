@@ -7,6 +7,10 @@ const TaskSchema = new Schema({
     type: String,
     required: true
   },
+  goalDate: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now

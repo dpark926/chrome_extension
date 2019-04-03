@@ -33,20 +33,29 @@ class Stocks extends Component {
       )
       .catch(err => console.log(err));
 
-    axios("http://localhost:3001/api/tasks")
+    axios(keys.db)
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
+        console.log(tomorrow);
         const goalsToday = res.data.filter(task => {
           return (
-            new Date(task.date).toString().slice(0, 15) ===
+            new Date(task.goalDate).toString().slice(0, 15) ===
             today.toString().slice(0, 15)
           );
         });
 
+        const goalsTomorrow = res.data.filter(task => {
+          return (
+            new Date(task.goalDate).toString().slice(0, 15) ===
+            tomorrow.toString().slice(0, 15)
+          );
+        });
+
         this.setState({
-          goalsToday: goalsToday
+          goalsToday: goalsToday,
+          goalsTomorrow: goalsTomorrow
         });
       })
       .catch(err => console.log(err));
@@ -79,17 +88,32 @@ class Stocks extends Component {
   handleSubmit = type => {
     const { goalsToday, goalsTomorrow, newGoal } = this.state;
     let clone = [];
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
 
     switch (type) {
       case "today":
         clone = goalsToday.slice();
-        clone.push(newGoal);
-        this.setState({ goalsToday: clone });
+        axios
+          .post(keys.db, {
+            name: newGoal,
+            goalDate: today.toString().slice(0, 15)
+          })
+          .then(res =>
+            this.setState({ goalsToday: [...goalsToday, res.data] })
+          );
         break;
       case "tomorrow":
         clone = goalsTomorrow.slice();
-        clone.push(newGoal);
-        this.setState({ goalsTomorrow: clone });
+        axios
+          .post(keys.db, {
+            name: newGoal,
+            goalDate: tomorrow.toString().slice(0, 15)
+          })
+          .then(res =>
+            this.setState({ goalsTomorrow: [...goalsTomorrow, res.data] })
+          );
         break;
       default:
         return;
@@ -97,7 +121,7 @@ class Stocks extends Component {
     this.toggleGoalModal(type);
   };
 
-  handleDelete = (type, goalToDelete) => {
+  handleDelete = (type, id) => {
     const { goalsToday, goalsTomorrow } = this.state;
 
     let clone = [];
@@ -107,16 +131,20 @@ class Stocks extends Component {
       case "today":
         clone = goalsToday.slice();
         newClone = clone.filter(goal => {
-          return goal !== goalToDelete;
+          return goal._id !== id;
         });
-        this.setState({ goalsToday: newClone });
+        axios
+          .delete(`http://localhost:3001/api/tasks/${id}`)
+          .then(res => this.setState({ goalsToday: newClone }));
         break;
       case "tomorrow":
         clone = goalsTomorrow.slice();
         newClone = clone.filter(goal => {
-          return goal !== goalToDelete;
+          return goal._id !== id;
         });
-        this.setState({ goalsTomorrow: newClone });
+        axios
+          .delete(`http://localhost:3001/api/tasks/${id}`)
+          .then(res => this.setState({ goalsTomorrow: newClone }));
         break;
       default:
         return;
@@ -305,7 +333,7 @@ class Stocks extends Component {
                                 size={18}
                                 color="lightgray"
                                 onClick={() => {
-                                  this.handleDelete("today", goal.name);
+                                  this.handleDelete("today", goal._id);
                                 }}
                               />
                             </div>
@@ -356,13 +384,13 @@ class Stocks extends Component {
                           {goalsTomorrow.map((goal, idx) => {
                             return (
                               <div className="flex">
-                                <li className="flex-auto p1">{goal}</li>
+                                <li className="flex-auto p1">{goal.name}</li>
                                 <Delete
                                   className="icon pt1 mr1 pointer hover"
                                   size={18}
                                   color="lightgray"
                                   onClick={() => {
-                                    this.handleDelete("tomorrow", goal);
+                                    this.handleDelete("tomorrow", goal._id);
                                   }}
                                 />
                               </div>
