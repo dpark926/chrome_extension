@@ -2,15 +2,13 @@ const express = require("express");
 const next = require("next");
 const bodyParser = require("body-parser");
 const tasks = require("./routes/api/tasks");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const dev = process.env.NODE_DEV !== "production"; //true false
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler(); //part of next config
 const mongoose = require("mongoose");
 
-const db = mongoose.connect(
-  "mongodb://dpark926:learnc0de@ds145574.mlab.com:45574/chrome_extension"
-);
+const db = mongoose.connect(require("./config/keys").mongoURI);
 
 nextApp.prepare().then(() => {
   // express code here

@@ -10,6 +10,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "server": "node server/index.js",
     "heroku-postbuild": "npm run build"
   },
   "keywords": [],

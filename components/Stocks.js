@@ -33,7 +33,7 @@ class Stocks extends Component {
       )
       .catch(err => console.log(err));
 
-    fetch("http://localhost:3000/api/tasks")
+    fetch("http://localhost:3001/api/tasks")
       .then(response => response.json())
       .then(data =>
         this.setState({
