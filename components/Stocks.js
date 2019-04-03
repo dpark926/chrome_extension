@@ -33,13 +33,22 @@ class Stocks extends Component {
       )
       .catch(err => console.log(err));
 
-    fetch("http://localhost:3001/api/tasks")
-      .then(response => response.json())
-      .then(data =>
+    axios("http://localhost:3001/api/tasks")
+      .then(res => {
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        const goalsToday = res.data.filter(task => {
+          return (
+            new Date(task.date).toString().slice(0, 15) ===
+            today.toString().slice(0, 15)
+          );
+        });
+
         this.setState({
-          tasksData: data
-        })
-      )
+          goalsToday: goalsToday
+        });
+      })
       .catch(err => console.log(err));
   }
 
@@ -289,14 +298,14 @@ class Stocks extends Component {
                                   type="checkbox"
                                   name="read"
                                 />
-                                <span>{goal}</span>
+                                <span>{goal.name}</span>
                               </label>
                               <Delete
                                 className="icon pt1 mr1 pointer hover"
                                 size={18}
                                 color="lightgray"
                                 onClick={() => {
-                                  this.handleDelete("today", goal);
+                                  this.handleDelete("today", goal.name);
                                 }}
                               />
                             </div>
