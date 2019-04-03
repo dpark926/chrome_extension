@@ -10,6 +10,7 @@ import ThumbUp from "rmdi/lib/ThumbUp";
 import ThumbDown from "rmdi/lib/ThumbDown";
 import { keys } from "../config/keys";
 import "../styles/stocks.scss";
+import axios from "axios";
 
 class Stocks extends Component {
   constructor() {
@@ -31,6 +32,23 @@ class Stocks extends Component {
         })
       )
       .catch(err => console.log(err));
+
+    axios
+      .get(keys.proxyURL + "http://localhost:5001/api/tasks")
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          tasksData: data
+        })
+      )
+      .catch(err => console.log(err));
+
+    // axios.get("/api/items").then(res =>
+    //   dispatch({
+    //     type: GET_ITEMS,
+    //     payload: res.data
+    //   })
+    // );
   }
 
   selectFinanceTab = category => {
@@ -113,6 +131,8 @@ class Stocks extends Component {
       goalsToday,
       goalsTomorrow
     } = this.state;
+
+    console.log(this.state);
 
     return (
       <div className="col-6 relative">
