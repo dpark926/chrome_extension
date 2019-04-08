@@ -5,13 +5,10 @@ import { keys } from "../config/keys";
 import "../styles/crypto.scss";
 
 class Crypto extends Component {
-  constructor() {
-    super();
-    this.state = {
-      timeTab: "24h",
-      portfolio: { ETH: { "ETH-price": "754.02", "ETH-amount": "5.41461182" } }
-    };
-  }
+  state = {
+    timeTab: "24h",
+    portfolio: { ETH: { "ETH-price": "157.96", "ETH-amount": "5.41461182" } }
+  };
 
   componentDidMount() {
     fetch(`https://${keys.cryptoCompareAPI}`)
@@ -64,8 +61,9 @@ class Crypto extends Component {
         if (tokenPrice && tokenAmount) {
           totalValue = Math.round(tokenAmount * currentTokenPrice * 100) / 100;
           gainLoss =
-            Math.round((tokenAmount * currentTokenPrice - tokenPrice) * 100) /
-            100;
+            Math.round(
+              (tokenAmount * currentTokenPrice - tokenAmount * tokenPrice) * 100
+            ) / 100;
         } else {
           return false;
         }

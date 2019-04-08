@@ -8,12 +8,17 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler(); //part of next config
 const mongoose = require("mongoose");
 
-const db = mongoose.connect(require("./config/keys").mongoURI);
-
 nextApp.prepare().then(() => {
   // express code here
   // express code here
   const app = express();
+  const db = mongoose
+    .connect(
+      "mongodb://dpark926:learnc0de@ds145574.mlab.com:45574/chrome_extension",
+      { useNewUrlParser: true }
+    )
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log(err));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/api/tasks", tasks);

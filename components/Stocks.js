@@ -33,13 +33,20 @@ class Stocks extends Component {
       )
       .catch(err => console.log(err));
 
-    axios(keys.db)
+    // axios.get("http://localhost:3001/api/tasks").then(res => {
+    //   console.log(res);
+    // });
+    //
+    axios
+      .get(keys.db)
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
         console.log(tomorrow);
         const goalsToday = res.data.filter(task => {
+          console.log(new Date(task.goalDate).toString().slice(0, 15));
+          console.log(today.toString().slice(0, 15));
           return (
             new Date(task.goalDate).toString().slice(0, 15) ===
             today.toString().slice(0, 15)
@@ -249,6 +256,9 @@ class Stocks extends Component {
                   </div>
                 );
               })}
+            {financeTab === "stocks" && (
+              <div className="center light-gray py4">(Coming Soon)</div>
+            )}
             {financeTab === "goals" && (
               <div className="flex light-gray" style={{ height: "100%" }}>
                 <div className="goal-section-left flex flex-column col-6">

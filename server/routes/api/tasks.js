@@ -8,6 +8,7 @@ const Task = require("../../models/Task");
 // @desc    Get all tasks
 // @access  Public
 router.get("/", (req, res) => {
+  console.log("hey");
   Task.find()
     .sort({ date: -1 })
     .then(tasks => res.json(tasks));
