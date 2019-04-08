@@ -7,7 +7,10 @@ import "../styles/crypto.scss";
 class Crypto extends Component {
   state = {
     timeTab: "24h",
-    portfolio: { ETH: { "ETH-price": "157.96", "ETH-amount": "5.41461182" } }
+    portfolio: {
+      BTC: { "BTC-price": "5272.72", "BTC-amount": "0.09459123" },
+      LTC: { "LTC-price": "91.71", "LTC-amount": "3.84112230" }
+    }
   };
 
   componentDidMount() {
@@ -47,7 +50,7 @@ class Crypto extends Component {
 
   onSubmit = () => {
     const { cryptoData, portfolio } = this.state;
-    let totalValue;
+    let totalValue = 0;
     let gainLoss;
 
     if (cryptoData) {
@@ -59,7 +62,7 @@ class Crypto extends Component {
         const currentTokenPrice = cryptoData.RAW[key].USD.PRICE;
 
         if (tokenPrice && tokenAmount) {
-          totalValue = Math.round(tokenAmount * currentTokenPrice * 100) / 100;
+          totalValue += Math.round(tokenAmount * currentTokenPrice * 100) / 100;
           gainLoss =
             Math.round(
               (tokenAmount * currentTokenPrice - tokenAmount * tokenPrice) * 100

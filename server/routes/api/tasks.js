@@ -20,7 +20,9 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const newTask = new Task({
     name: req.body.name,
-    goalDate: req.body.goalDate
+    goalDate: req.body.goalDate,
+    isDailyGoal: req.body.isDailyGoal,
+    isComplete: req.body.isComplete
   });
 
   newTask.save().then(task => res.json(task));

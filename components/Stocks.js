@@ -15,7 +15,20 @@ import axios from "axios";
 class Stocks extends Component {
   constructor() {
     super();
-    this.state = { financeTab: "crypto", goalsToday: [], goalsTomorrow: [] };
+    this.state = {
+      financeTab: "crypto",
+      goalsDaily: [
+        { goal: "Wake up at 6AM", isComplete: false },
+        { goal: "QT/Meditate", isComplete: false },
+        { goal: "Apply to jobs", isComplete: false },
+        { goal: "Exercise", isComplete: false },
+        { goal: "Study", isComplete: false },
+        { goal: "Work on Apps", isComplete: false },
+        { goal: "Read", isComplete: false }
+      ],
+      goalsToday: [],
+      goalsTomorrow: []
+    };
   }
 
   componentDidMount() {
@@ -33,23 +46,21 @@ class Stocks extends Component {
       )
       .catch(err => console.log(err));
 
-    // axios.get("http://localhost:3001/api/tasks").then(res => {
-    //   console.log(res);
-    // });
-    //
     axios
       .get(keys.db)
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
-        console.log(tomorrow);
+
+        // const goalsDaily = res.data.filter(task => {
+        //   return task.isDailyGoal === true || task.isDailyGoal === "true";
+        // });
+
         const goalsToday = res.data.filter(task => {
-          console.log(new Date(task.goalDate).toString().slice(0, 15));
-          console.log(today.toString().slice(0, 15));
           return (
             new Date(task.goalDate).toString().slice(0, 15) ===
-            today.toString().slice(0, 15)
+              today.toString().slice(0, 15) && task.isDailyGoal !== true
           );
         });
 
@@ -60,7 +71,10 @@ class Stocks extends Component {
           );
         });
 
+        console.log(goalsDaily);
+
         this.setState({
+          // goalsDaily: goalsDaily,
           goalsToday: goalsToday,
           goalsTomorrow: goalsTomorrow
         });
@@ -73,9 +87,12 @@ class Stocks extends Component {
   };
 
   toggleGoalModal = type => {
-    const { todayModalOpen, tomorrowModalOpen } = this.state;
+    const { dailyModalOpen, todayModalOpen, tomorrowModalOpen } = this.state;
 
     switch (type) {
+      case "daily":
+        this.setState({ dailyModalOpen: !dailyModalOpen });
+        break;
       case "today":
         this.setState({ todayModalOpen: !todayModalOpen });
         break;
@@ -89,17 +106,31 @@ class Stocks extends Component {
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(e.target.value);
   };
 
   handleSubmit = type => {
-    const { goalsToday, goalsTomorrow, newGoal } = this.state;
+    const { goalsDaily, goalsToday, goalsTomorrow, newGoal } = this.state;
     let clone = [];
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
     switch (type) {
+      case "daily":
+        clone = goalsDaily.slice();
+        this.setState({
+          goalsDaily: [...goalsDaily, { goal: newGoal, isComplete: false }]
+        });
+        // axios
+        //   .post(keys.db, {
+        //     name: newGoal,
+        //     goalDate: today.toString().slice(0, 15),
+        //     isDailyGoal: true
+        //   })
+        //   .then(res =>
+        //     this.setState({ goalsDaily: [...goalsDaily, res.data] })
+        //   );
+        break;
       case "today":
         clone = goalsToday.slice();
         axios
@@ -164,11 +195,13 @@ class Stocks extends Component {
       financeTab,
       todayModalOpen,
       tomorrowModalOpen,
+      dailyModalOpen,
+      goalsDaily,
       goalsToday,
       goalsTomorrow
     } = this.state;
 
-    console.log(this.state);
+    console.log(goalsDaily);
 
     return (
       <div className="col-6 relative">
@@ -198,11 +231,12 @@ class Stocks extends Component {
             Goals
           </div>
         </div>
-        {!cryptoNewsData && (
-          <div className="relative p4">
-            <Loader color="#fff" />
-          </div>
-        )}
+        {!cryptoNewsData &&
+          financeTab === "crypto" && (
+            <div className="relative p4">
+              <Loader color="#fff" />
+            </div>
+          )}
         <div
           className="absolute col-12"
           style={{ height: "calc(100vh - 260px)" }}
@@ -263,62 +297,52 @@ class Stocks extends Component {
               <div className="flex light-gray" style={{ height: "100%" }}>
                 <div className="goal-section-left flex flex-column col-6">
                   <h4 className="p1 m0 white center">DAILY GOALS</h4>
-                  <label className="p1">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="wake"
-                    />
-                    <span>Wake up at 6AM</span>
-                  </label>
-                  <label className="p1">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="meditate"
-                    />
-                    <span>QT/Meditate</span>
-                  </label>
-                  <label className="p1 light-gray">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="jobs"
-                    />
-                    <span>Apply to jobs</span>
-                  </label>
-                  <label className="p1 light-gray">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="exercise"
-                    />
-                    <span>Exercise</span>
-                  </label>
-                  <label className="p1 light-gray">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="study"
-                    />
-                    <span>Study</span>
-                  </label>
-                  <label className="p1 light-gray">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="work"
-                    />
-                    <span>Work on Apps</span>
-                  </label>
-                  <label className="p1 light-gray">
-                    <input
-                      className="strikethrough mr1"
-                      type="checkbox"
-                      name="read"
-                    />
-                    <span>Read</span>
-                  </label>
+                  {goalsDaily.map((goal, idx) => {
+                    return (
+                      <label className="p1" key={goal + idx}>
+                        <input
+                          className="strikethrough mr1"
+                          type="checkbox"
+                          name="wake"
+                        />
+                        <span>{goal.goal}</span>
+                      </label>
+                    );
+                  })}
+                  {dailyModalOpen ? (
+                    <div className="center">
+                      <input
+                        className="bg-dark-gray border-divider rounded white px1 my1 h6"
+                        type="text"
+                        name="newGoal"
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                      />
+                      <div className="pt1">
+                        <button
+                          className="mx1 mb1 white pointer bg-dark-gray py1 rounded hover"
+                          onClick={() => this.toggleGoalModal("daily")}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="mx1 white pointer bg-blue border-none py1 rounded hover"
+                          onClick={() => this.handleSubmit("daily")}
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="center mb2">
+                      <ControlPoint
+                        className="pt1 pointer hover"
+                        size={18}
+                        color="lightgray"
+                        onClick={() => this.toggleGoalModal("daily")}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-column col-6">
                   <div className="todays-goal-section">

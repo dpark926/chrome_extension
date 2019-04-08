@@ -11,6 +11,14 @@ const TaskSchema = new Schema({
     type: String,
     required: true
   },
+  isDailyGoal: {
+    type: Boolean,
+    required: false
+  },
+  isComplete: {
+    type: Boolean,
+    default: false
+  },
   date: {
     type: Date,
     default: Date.now
