@@ -74,7 +74,7 @@ class Crypto extends Component {
     }
 
     this.setState({
-      totalValue: totalValue,
+      totalValue: Math.round(totalValue * 100) / 100,
       gainLoss: gainLoss,
       cryptoModalOpen: false
     });

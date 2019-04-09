@@ -71,7 +71,7 @@ class Stocks extends Component {
           );
         });
 
-        console.log(goalsDaily);
+        // console.log(goalsDaily);
 
         this.setState({
           // goalsDaily: goalsDaily,
@@ -117,7 +117,6 @@ class Stocks extends Component {
 
     switch (type) {
       case "daily":
-        clone = goalsDaily.slice();
         this.setState({
           goalsDaily: [...goalsDaily, { goal: newGoal, isComplete: false }]
         });
@@ -132,7 +131,6 @@ class Stocks extends Component {
         //   );
         break;
       case "today":
-        clone = goalsToday.slice();
         axios
           .post(keys.db, {
             name: newGoal,
@@ -143,7 +141,6 @@ class Stocks extends Component {
           );
         break;
       case "tomorrow":
-        clone = goalsTomorrow.slice();
         axios
           .post(keys.db, {
             name: newGoal,
@@ -189,6 +186,38 @@ class Stocks extends Component {
     }
   };
 
+  completedTask = (type, id) => {
+    const { goalsToday, goalsTomorrow } = this.state;
+
+    let clone = [];
+
+    switch (type) {
+      case "today":
+        clone = goalsToday.slice();
+        clone.forEach(goalObj => {
+          if (goalObj._id === id) {
+            goalObj.isComplete = !goalObj.isComplete;
+          }
+        });
+        this.setState({ goalsToday: clone });
+        // axios
+        //   .delete(`http://localhost:3001/api/tasks/${id}`)
+        //   .then(res => this.setState({ goalsToday: newClone }));
+        break;
+      case "tomorrow":
+        // clone = goalsTomorrow.slice();
+        // newClone = clone.filter(goal => {
+        //   return goal._id !== id;
+        // });
+        // axios
+        //   .delete(`http://localhost:3001/api/tasks/${id}`)
+        //   .then(res => this.setState({ goalsTomorrow: newClone }));
+        break;
+      default:
+        return;
+    }
+  };
+
   render() {
     const {
       cryptoNewsData,
@@ -201,7 +230,20 @@ class Stocks extends Component {
       goalsTomorrow
     } = this.state;
 
-    console.log(goalsDaily);
+    let numOfGoalsTodayCompleted = 0;
+    let numOfGoalsTomorrowCompleted = 0;
+
+    goalsToday.forEach((goal, idx) => {
+      if (goal.isComplete === true) {
+        numOfGoalsTodayCompleted += 1;
+      }
+    });
+
+    goalsTomorrow.forEach((goal, idx) => {
+      if (goal.isComplete === true) {
+        numOfGoalsTomorrowCompleted += 1;
+      }
+    });
 
     return (
       <div className="col-6 relative">
@@ -353,26 +395,55 @@ class Stocks extends Component {
                       <div className="flex flex-column">
                         {goalsToday.map((goal, idx) => {
                           return (
-                            <div className="flex">
-                              <label className="flex-auto p1 light-gray">
-                                <input
-                                  className="strikethrough mr1"
-                                  type="checkbox"
-                                  name="read"
+                            <div>
+                              <div className="flex">
+                                <label className="flex-auto p1 light-gray">
+                                  <input
+                                    className="strikethrough mr1"
+                                    type="checkbox"
+                                    name="read"
+                                    onChange={() =>
+                                      this.completedTask("today", goal._id)
+                                    }
+                                  />
+                                  <span>{goal.name}</span>
+                                </label>
+                                <Delete
+                                  className="icon pt1 mr1 pointer hover"
+                                  size={18}
+                                  color="lightgray"
+                                  onClick={() => {
+                                    this.handleDelete("today", goal._id);
+                                  }}
                                 />
-                                <span>{goal.name}</span>
-                              </label>
-                              <Delete
-                                className="icon pt1 mr1 pointer hover"
-                                size={18}
-                                color="lightgray"
-                                onClick={() => {
-                                  this.handleDelete("today", goal._id);
-                                }}
-                              />
+                              </div>
                             </div>
                           );
                         })}
+                        <p className="center">{`${numOfGoalsTodayCompleted} / ${
+                          goalsToday.length
+                        } COMPLETED`}</p>
+                        <div className="flex mb1 mx2">
+                          <div
+                            className="border green"
+                            style={{
+                              width:
+                                (numOfGoalsTodayCompleted / goalsToday.length) *
+                                  100 +
+                                "%"
+                            }}
+                          />
+                          <div
+                            className="border light-gray"
+                            style={{
+                              width:
+                                100 -
+                                (numOfGoalsTodayCompleted / goalsToday.length) *
+                                  100 +
+                                "%"
+                            }}
+                          />
+                        </div>
                       </div>
                     )}
                     {todayModalOpen ? (
@@ -417,16 +488,18 @@ class Stocks extends Component {
                         <ol className="py1 pl3 m0">
                           {goalsTomorrow.map((goal, idx) => {
                             return (
-                              <div className="flex">
-                                <li className="flex-auto p1">{goal.name}</li>
-                                <Delete
-                                  className="icon pt1 mr1 pointer hover"
-                                  size={18}
-                                  color="lightgray"
-                                  onClick={() => {
-                                    this.handleDelete("tomorrow", goal._id);
-                                  }}
-                                />
+                              <div>
+                                <div className="flex">
+                                  <li className="flex-auto p1">{goal.name}</li>
+                                  <Delete
+                                    className="icon pt1 mr1 pointer hover"
+                                    size={18}
+                                    color="lightgray"
+                                    onClick={() => {
+                                      this.handleDelete("tomorrow", goal._id);
+                                    }}
+                                  />
+                                </div>
                               </div>
                             );
                           })}
