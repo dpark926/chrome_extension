@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require("next");
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const tasks = require("./routes/api/tasks");
 const PORT = process.env.PORT || 3001;
@@ -9,13 +10,10 @@ const handle = nextApp.getRequestHandler(); //part of next config
 const mongoose = require("mongoose");
 
 nextApp.prepare().then(() => {
-  // express code here
-  // express code here
   const app = express();
-
   const db = mongoose
     .connect(
-      config.get("mongoURI"),
+      process.env.mongoURI,
       { useNewUrlParser: true }
     )
     .then(() => console.log("MongoDB Connected"))
