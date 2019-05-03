@@ -16,7 +16,7 @@ class Stocks extends Component {
   constructor() {
     super();
     this.state = {
-      financeTab: "crypto",
+      financeTab: "goals",
       goalsDaily: [],
       goalsToday: [],
       goalsTomorrow: []

@@ -24,6 +24,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Inconsolata:400,700"
             rel="stylesheet"
           />
+          <link rel="icon" type="image/x-icon" href="../static/favicon.ico" />
         </Head>
         <body className="custom_class inconsolata">
           <Main />
