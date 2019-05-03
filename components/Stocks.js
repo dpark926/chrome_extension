@@ -17,15 +17,7 @@ class Stocks extends Component {
     super();
     this.state = {
       financeTab: "crypto",
-      goalsDaily: [
-        { goal: "Wake up at 6AM", isComplete: false },
-        { goal: "QT/Meditate", isComplete: false },
-        { goal: "Apply to jobs", isComplete: false },
-        { goal: "Exercise", isComplete: false },
-        { goal: "Study", isComplete: false },
-        { goal: "Work on Apps", isComplete: false },
-        { goal: "Read", isComplete: false }
-      ],
+      goalsDaily: [],
       goalsToday: [],
       goalsTomorrow: []
     };
@@ -47,15 +39,11 @@ class Stocks extends Component {
       .catch(err => console.log(err));
 
     axios
-      .get(keys.db)
+      .get(keys.db + "/tasks")
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
         tomorrow.setDate(today.getDate() + 1);
-
-        // const goalsDaily = res.data.filter(task => {
-        //   return task.isDailyGoal === true || task.isDailyGoal === "true";
-        // });
 
         const goalsToday = res.data.filter(task => {
           return (
@@ -71,15 +59,16 @@ class Stocks extends Component {
           );
         });
 
-        // console.log(goalsDaily);
-
         this.setState({
-          // goalsDaily: goalsDaily,
           goalsToday: goalsToday,
           goalsTomorrow: goalsTomorrow
         });
       })
       .catch(err => console.log(err));
+
+    axios.get(keys.db + "/dailyGoals").then(res => {
+      this.setState({ goalsDaily: res.data });
+    });
   }
 
   selectFinanceTab = category => {
@@ -117,22 +106,17 @@ class Stocks extends Component {
 
     switch (type) {
       case "daily":
-        this.setState({
-          goalsDaily: [...goalsDaily, { goal: newGoal, isComplete: false }]
-        });
-        // axios
-        //   .post(keys.db, {
-        //     name: newGoal,
-        //     goalDate: today.toString().slice(0, 15),
-        //     isDailyGoal: true
-        //   })
-        //   .then(res =>
-        //     this.setState({ goalsDaily: [...goalsDaily, res.data] })
-        //   );
+        axios
+          .post(keys.db + "/dailyGoals", {
+            name: newGoal
+          })
+          .then(res =>
+            this.setState({ goalsDaily: [...goalsDaily, res.data] })
+          );
         break;
       case "today":
         axios
-          .post(keys.db, {
+          .post(keys.db + "/tasks", {
             name: newGoal,
             goalDate: today.toString().slice(0, 15)
           })
@@ -142,7 +126,7 @@ class Stocks extends Component {
         break;
       case "tomorrow":
         axios
-          .post(keys.db, {
+          .post(keys.db + "/tasks", {
             name: newGoal,
             goalDate: tomorrow.toString().slice(0, 15)
           })
@@ -157,19 +141,28 @@ class Stocks extends Component {
   };
 
   handleDelete = (type, id) => {
-    const { goalsToday, goalsTomorrow } = this.state;
+    const { goalsDaily, goalsToday, goalsTomorrow } = this.state;
 
     let clone = [];
     let newClone = [];
 
     switch (type) {
+      case "daily":
+        clone = goalsDaily.slice();
+        newClone = clone.filter(goal => {
+          return goal._id !== id;
+        });
+        axios
+          .delete(`${keys.db}/dailyGoals/${id}`)
+          .then(res => this.setState({ goalsDaily: newClone }));
+        break;
       case "today":
         clone = goalsToday.slice();
         newClone = clone.filter(goal => {
           return goal._id !== id;
         });
         axios
-          .delete(`http://localhost:3001/api/tasks/${id}`)
+          .delete(`${keys.db}/tasks/${id}`)
           .then(res => this.setState({ goalsToday: newClone }));
         break;
       case "tomorrow":
@@ -178,7 +171,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`http://localhost:3001/api/tasks/${id}`)
+          .delete(`${keys.db}/tasks/${id}`)
           .then(res => this.setState({ goalsTomorrow: newClone }));
         break;
       default:
@@ -200,18 +193,6 @@ class Stocks extends Component {
           }
         });
         this.setState({ goalsToday: clone });
-        // axios
-        //   .delete(`http://localhost:3001/api/tasks/${id}`)
-        //   .then(res => this.setState({ goalsToday: newClone }));
-        break;
-      case "tomorrow":
-        // clone = goalsTomorrow.slice();
-        // newClone = clone.filter(goal => {
-        //   return goal._id !== id;
-        // });
-        // axios
-        //   .delete(`http://localhost:3001/api/tasks/${id}`)
-        //   .then(res => this.setState({ goalsTomorrow: newClone }));
         break;
       default:
         return;
@@ -341,14 +322,24 @@ class Stocks extends Component {
                   <h4 className="p1 m0 white center">DAILY GOALS</h4>
                   {goalsDaily.map((goal, idx) => {
                     return (
-                      <label className="p1" key={goal + idx}>
-                        <input
-                          className="strikethrough mr1"
-                          type="checkbox"
-                          name="wake"
+                      <div className="flex">
+                        <label className="flex-auto p1" key={goal + idx}>
+                          <input
+                            className="strikethrough mr1"
+                            type="checkbox"
+                            name="wake"
+                          />
+                          <span>{goal.name}</span>
+                        </label>
+                        <Delete
+                          className="icon pt1 mr1 pointer hover"
+                          size={18}
+                          color="lightgray"
+                          onClick={() => {
+                            this.handleDelete("daily", goal._id);
+                          }}
                         />
-                        <span>{goal.goal}</span>
-                      </label>
+                      </div>
                     );
                   })}
                   {dailyModalOpen ? (
