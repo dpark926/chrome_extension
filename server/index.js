@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require("next");
+var cors = require("cors");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const tasks = require("./routes/api/tasks");
@@ -18,6 +19,7 @@ nextApp.prepare().then(() => {
     )
     .then(() => console.log("MongoDB Connected"))
     .catch(err => console.log(err));
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/api/tasks", tasks);
