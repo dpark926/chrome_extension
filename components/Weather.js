@@ -36,7 +36,7 @@ class Weather extends Component {
 
   fetchWeatherData = (zipCode = this.state.currentZip) => {
     fetch(
-      `https://${keys.openWeatherMapAPI}weather?appid=${
+      `${keys.openWeatherMapAPI}weather?appid=${
         keys.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
@@ -49,7 +49,7 @@ class Weather extends Component {
       .catch(err => console.log(err));
 
     fetch(
-      `https://${keys.openWeatherMapAPI}forecast?appid=${
+      `${keys.openWeatherMapAPI}forecast?appid=${
         keys.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
