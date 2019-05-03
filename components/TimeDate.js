@@ -74,7 +74,10 @@ class TimeDate extends Component {
             className="absolute col-12 flex flex-column justify-center items-center bg-modal light-gray z1"
             style={{ height: "100%", top: 0, left: 0 }}
           >
-            <div className="absolute bg-dark-gray light-gray py3 px4 border rounded z2">
+            <div
+              className="absolute col-12 bg-dark-gray light-gray py4 px3 border rounded z2"
+              style={{ maxWidth: "250px" }}
+            >
               <Close
                 className="absolute pointer hover"
                 size={24}

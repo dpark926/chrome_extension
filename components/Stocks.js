@@ -425,7 +425,11 @@ class Stocks extends Component {
                         } COMPLETED`}</p>
                         <div className="flex mb1 mx2">
                           <div
-                            className="border green"
+                            className={`border ${
+                              numOfGoalsTodayCompleted === goalsToday.length
+                                ? "green"
+                                : "yellow"
+                            }`}
                             style={{
                               width:
                                 (numOfGoalsTodayCompleted / goalsToday.length) *

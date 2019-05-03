@@ -12,9 +12,10 @@ nextApp.prepare().then(() => {
   // express code here
   // express code here
   const app = express();
+
   const db = mongoose
     .connect(
-      "mongodb://dpark926:learnc0de@ds145574.mlab.com:45574/chrome_extension",
+      config.get("mongoURI"),
       { useNewUrlParser: true }
     )
     .then(() => console.log("MongoDB Connected"))
