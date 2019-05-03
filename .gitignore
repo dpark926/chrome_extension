@@ -18,7 +18,3 @@ yarn-error.log*
 
 # Next.js
 /.next
-
-/config
-
-/server/config*
