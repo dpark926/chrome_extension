@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import Dotenv from "dotenv";
 import Link from "next/link";
 import Loader from "react-loader";
 import ControlPoint from "rmdi/lib/ControlPoint";
@@ -24,10 +25,11 @@ class Stocks extends Component {
   }
 
   componentDidMount() {
+    Dotenv.config();
     fetch(
-      keys.PROXY_URL +
-        `https://${keys.cryptoPanicAPI}?auth_token=${
-          keys.cryptoPanicAPIKey
+      process.env.PROXY_URL +
+        `https://${process.env.cryptoPanicAPI}?auth_token=${
+          process.env.cryptoPanicAPIKey
         }&filter=rising`
     )
       .then(response => response.json())
@@ -39,7 +41,7 @@ class Stocks extends Component {
       .catch(err => console.log(err));
 
     axios
-      .get(keys.db + "/tasks")
+      .get(process.env.db + "/tasks")
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
@@ -66,7 +68,7 @@ class Stocks extends Component {
       })
       .catch(err => console.log(err));
 
-    axios.get(keys.db + "/dailyGoals").then(res => {
+    axios.get(process.env.db + "/dailyGoals").then(res => {
       this.setState({ goalsDaily: res.data });
     });
   }
@@ -107,7 +109,7 @@ class Stocks extends Component {
     switch (type) {
       case "daily":
         axios
-          .post(keys.db + "/dailyGoals", {
+          .post(process.env.db + "/dailyGoals", {
             name: newGoal
           })
           .then(res =>
@@ -116,7 +118,7 @@ class Stocks extends Component {
         break;
       case "today":
         axios
-          .post(keys.db + "/tasks", {
+          .post(process.env.db + "/tasks", {
             name: newGoal,
             goalDate: today.toString().slice(0, 15)
           })
@@ -126,7 +128,7 @@ class Stocks extends Component {
         break;
       case "tomorrow":
         axios
-          .post(keys.db + "/tasks", {
+          .post(process.env.db + "/tasks", {
             name: newGoal,
             goalDate: tomorrow.toString().slice(0, 15)
           })
@@ -153,7 +155,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${keys.db}/dailyGoals/${id}`)
+          .delete(`${process.env.db}/dailyGoals/${id}`)
           .then(res => this.setState({ goalsDaily: newClone }));
         break;
       case "today":
@@ -162,7 +164,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${keys.db}/tasks/${id}`)
+          .delete(`${process.env.db}/tasks/${id}`)
           .then(res => this.setState({ goalsToday: newClone }));
         break;
       case "tomorrow":
@@ -171,7 +173,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${keys.db}/tasks/${id}`)
+          .delete(`${process.env.db}/tasks/${id}`)
           .then(res => this.setState({ goalsTomorrow: newClone }));
         break;
       default:
