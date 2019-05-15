@@ -6,10 +6,13 @@ const webpack = require("webpack");
 
 module.exports = withSass(
   withImages({
-    webpack(config) {
-      config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
-
-      return config;
+    // webpack(config) {
+    //   config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
+    //
+    //   return config;
+    // }
+    env: {
+      TEST: process.env.PROXY_URL
     }
   })
 );
