@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Settings from "rmdi/lib/Settings";
