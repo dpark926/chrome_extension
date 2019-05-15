@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const next = require("next");
-var cors = require("cors");
-require("dotenv").config();
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const tasks = require("./routes/api/tasks");
 const dailyGoals = require("./routes/api/dailyGoals");
