@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import Dotenv from "dotenv";
 import Link from "next/link";
 import Loader from "react-loader";
 import ControlPoint from "rmdi/lib/ControlPoint";
@@ -25,7 +24,6 @@ class Stocks extends Component {
   }
 
   componentDidMount() {
-    Dotenv.config();
     fetch(
       process.env.PROXY_URL +
         `https://${process.env.cryptoPanicAPI}?auth_token=${
