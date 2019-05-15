@@ -14,7 +14,6 @@
 //   })
 // );
 
-require("dotenv").config();
 const withSass = require("@zeit/next-sass");
 const withImages = require("next-images");
 const path = require("path");
