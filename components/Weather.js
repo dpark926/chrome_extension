@@ -36,8 +36,8 @@ class Weather extends Component {
 
   fetchWeatherData = (zipCode = this.state.currentZip) => {
     fetch(
-      `${process.env.openWeatherMapAPI}weather?appid=${
-        process.env.openWeatherMapAPIKey
+      `${keys.openWeatherMapAPI}weather?appid=${
+        keys.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())
@@ -49,8 +49,8 @@ class Weather extends Component {
       .catch(err => console.log(err));
 
     fetch(
-      `${process.env.openWeatherMapAPI}forecast?appid=${
-        process.env.openWeatherMapAPIKey
+      `${keys.openWeatherMapAPI}forecast?appid=${
+        keys.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())

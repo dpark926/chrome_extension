@@ -14,8 +14,8 @@ class TopNews extends Component {
 
   componentDidMount() {
     fetch(
-      `https://${process.env.newsAPI}top-headlines?country=us&apiKey=${
-        process.env.newsAPIKey
+      `https://${keys.newsAPI}top-headlines?country=us&apiKey=${
+        keys.newsAPIKey
       }`
     )
       .then(response => response.json())
@@ -32,10 +32,8 @@ class TopNews extends Component {
 
     fetch(
       `https://${
-        process.env.newsAPI
-      }top-headlines?country=us&category=${category}&apiKey=${
-        process.env.newsAPIKey
-      }`
+        keys.newsAPI
+      }top-headlines?country=us&category=${category}&apiKey=${keys.newsAPIKey}`
     )
       .then(response => response.json())
       .then(data =>
