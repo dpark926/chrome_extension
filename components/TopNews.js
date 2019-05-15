@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-dotenv.config();
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
@@ -15,6 +14,8 @@ class TopNews extends Component {
   }
 
   componentDidMount() {
+    dotenv.config();
+
     fetch(
       `https://${process.env.newsAPI}top-headlines?country=us&apiKey=${
         process.env.newsAPIKey
