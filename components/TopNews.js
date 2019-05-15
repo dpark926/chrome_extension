@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
@@ -14,8 +16,8 @@ class TopNews extends Component {
 
   componentDidMount() {
     fetch(
-      `https://${keys.newsAPI}top-headlines?country=us&apiKey=${
-        keys.newsAPIKey
+      `https://${process.env.newsAPI}top-headlines?country=us&apiKey=${
+        process.env.newsAPIKey
       }`
     )
       .then(response => response.json())
@@ -32,8 +34,10 @@ class TopNews extends Component {
 
     fetch(
       `https://${
-        keys.newsAPI
-      }top-headlines?country=us&category=${category}&apiKey=${keys.newsAPIKey}`
+        process.env.newsAPI
+      }top-headlines?country=us&category=${category}&apiKey=${
+        process.env.newsAPIKey
+      }`
     )
       .then(response => response.json())
       .then(data =>

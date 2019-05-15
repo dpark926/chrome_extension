@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Settings from "rmdi/lib/Settings";
@@ -36,8 +38,8 @@ class Weather extends Component {
 
   fetchWeatherData = (zipCode = this.state.currentZip) => {
     fetch(
-      `${keys.openWeatherMapAPI}weather?appid=${
-        keys.openWeatherMapAPIKey
+      `${process.env.openWeatherMapAPI}weather?appid=${
+        process.env.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())
@@ -49,8 +51,8 @@ class Weather extends Component {
       .catch(err => console.log(err));
 
     fetch(
-      `${keys.openWeatherMapAPI}forecast?appid=${
-        keys.openWeatherMapAPIKey
+      `${process.env.openWeatherMapAPI}forecast?appid=${
+        process.env.openWeatherMapAPIKey
       }&units=imperial&zip=${zipCode},us`
     )
       .then(response => response.json())
