@@ -14,7 +14,7 @@ class Crypto extends Component {
   };
 
   componentDidMount() {
-    fetch(`https://${keys.cryptoCompareAPI}`)
+    fetch(`https://${process.env.cryptoCompareAPI}`)
       .then(response => response.json())
       .then(data =>
         this.setState({
