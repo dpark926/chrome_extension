@@ -12,7 +12,7 @@ module.exports = withSass(
     //   return config;
     // }
     env: {
-      TEST: process.env.PROXY_URL
+      PROXY_URL: process.env.PROXY_URL
     }
   })
 );
