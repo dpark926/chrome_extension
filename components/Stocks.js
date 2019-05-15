@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
@@ -25,8 +24,6 @@ class Stocks extends Component {
   }
 
   componentDidMount() {
-    dotenv.config();
-
     fetch(
       process.env.proxyURL +
         `https://${process.env.cryptoPanicAPI}?auth_token=${
