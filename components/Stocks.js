@@ -39,7 +39,7 @@ class Stocks extends Component {
       .catch(err => console.log(err));
 
     axios
-      .get(process.env.db + "/tasks")
+      .get("/tasks")
       .then(res => {
         const today = new Date();
         const tomorrow = new Date();
@@ -66,7 +66,7 @@ class Stocks extends Component {
       })
       .catch(err => console.log(err));
 
-    axios.get(process.env.db + "/dailyGoals").then(res => {
+    axios.get("/dailyGoals").then(res => {
       this.setState({ goalsDaily: res.data });
     });
   }
