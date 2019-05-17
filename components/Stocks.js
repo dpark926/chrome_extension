@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
+import ProgressBar from "./ProgressBar";
 import ControlPoint from "rmdi/lib/ControlPoint";
 import Delete from "rmdi/lib/Delete";
 import ArrowUpward from "rmdi/lib/ArrowUpward";
@@ -180,11 +181,20 @@ class Stocks extends Component {
   };
 
   completedTask = (type, id) => {
-    const { goalsToday, goalsTomorrow } = this.state;
+    const { goalsDaily, goalsToday } = this.state;
 
     let clone = [];
 
     switch (type) {
+      case "daily":
+        clone = goalsDaily.slice();
+        clone.forEach(goalObj => {
+          if (goalObj._id === id) {
+            goalObj.isComplete = !goalObj.isComplete;
+          }
+        });
+        this.setState({ goalsDaily: clone });
+        break;
       case "today":
         clone = goalsToday.slice();
         clone.forEach(goalObj => {
@@ -211,18 +221,18 @@ class Stocks extends Component {
       goalsTomorrow
     } = this.state;
 
+    let numOfGoalsDailyCompleted = 0;
     let numOfGoalsTodayCompleted = 0;
-    let numOfGoalsTomorrowCompleted = 0;
+
+    goalsDaily.forEach((goal, idx) => {
+      if (goal.isComplete === true) {
+        numOfGoalsDailyCompleted += 1;
+      }
+    });
 
     goalsToday.forEach((goal, idx) => {
       if (goal.isComplete === true) {
         numOfGoalsTodayCompleted += 1;
-      }
-    });
-
-    goalsTomorrow.forEach((goal, idx) => {
-      if (goal.isComplete === true) {
-        numOfGoalsTomorrowCompleted += 1;
       }
     });
 
@@ -320,28 +330,41 @@ class Stocks extends Component {
               <div className="flex light-gray" style={{ height: "100%" }}>
                 <div className="goal-section-left flex flex-column col-6">
                   <h4 className="p1 m0 white center">DAILY GOALS</h4>
-                  {goalsDaily.map((goal, idx) => {
-                    return (
-                      <div className="flex" key={goal + idx}>
-                        <label className="flex-auto p1">
-                          <input
-                            className="strikethrough mr1"
-                            type="checkbox"
-                            name="wake"
-                          />
-                          <span>{goal.name}</span>
-                        </label>
-                        <Delete
-                          className="icon pt1 mr1 pointer hover"
-                          size={18}
-                          color="lightgray"
-                          onClick={() => {
-                            this.handleDelete("daily", goal._id);
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
+                  {goalsDaily.length < 1 ? (
+                    <h4 className="m0 py1 center">(Nothing for today)</h4>
+                  ) : (
+                    <div>
+                      {goalsDaily.map((goal, idx) => {
+                        return (
+                          <div className="flex" key={goal + idx}>
+                            <label className="flex-auto p1">
+                              <input
+                                className="strikethrough mr1"
+                                type="checkbox"
+                                name="wake"
+                                onChange={() =>
+                                  this.completedTask("daily", goal._id)
+                                }
+                              />
+                              <span>{goal.name}</span>
+                            </label>
+                            <Delete
+                              className="icon pt1 mr1 pointer hover"
+                              size={18}
+                              color="lightgray"
+                              onClick={() => {
+                                this.handleDelete("daily", goal._id);
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                      <ProgressBar
+                        numOfComplete={numOfGoalsDailyCompleted}
+                        numOfTotal={goalsDaily.length}
+                      />
+                    </div>
+                  )}
                   {dailyModalOpen ? (
                     <div className="center">
                       <input
@@ -411,34 +434,10 @@ class Stocks extends Component {
                             </div>
                           );
                         })}
-                        <p className="center">{`${numOfGoalsTodayCompleted} / ${
-                          goalsToday.length
-                        } COMPLETED`}</p>
-                        <div className="flex mb1 mx2">
-                          <div
-                            className={`border ${
-                              numOfGoalsTodayCompleted === goalsToday.length
-                                ? "green"
-                                : "yellow"
-                            }`}
-                            style={{
-                              width:
-                                (numOfGoalsTodayCompleted / goalsToday.length) *
-                                  100 +
-                                "%"
-                            }}
-                          />
-                          <div
-                            className="border light-gray"
-                            style={{
-                              width:
-                                100 -
-                                (numOfGoalsTodayCompleted / goalsToday.length) *
-                                  100 +
-                                "%"
-                            }}
-                          />
-                        </div>
+                        <ProgressBar
+                          numOfComplete={numOfGoalsTodayCompleted}
+                          numOfTotal={goalsToday.length}
+                        />
                       </div>
                     )}
                     {todayModalOpen ? (
@@ -530,7 +529,7 @@ class Stocks extends Component {
                         </div>
                       </div>
                     ) : (
-                      <div className="center">
+                      <div className="center mb2">
                         <ControlPoint
                           className="pt1 pointer hover"
                           size={18}
