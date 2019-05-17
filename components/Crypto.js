@@ -14,6 +14,20 @@ class Crypto extends Component {
   };
 
   componentDidMount() {
+    this.getCryptoData();
+
+    const interval = setInterval(() => {
+      this.getCryptoData();
+    }, 30000);
+
+    this.setState({ interval: interval });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+  getCryptoData = () => {
     fetch(`https://${process.env.cryptoCompareAPI}`)
       .then(response => response.json())
       .then(data =>
@@ -23,7 +37,7 @@ class Crypto extends Component {
       )
       .then(this.onSubmit)
       .catch(err => console.log(err));
-  }
+  };
 
   selectTimeTab = time => {
     this.setState({ timeTab: time });

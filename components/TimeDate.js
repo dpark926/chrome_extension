@@ -13,9 +13,15 @@ class TimeDate extends Component {
   }
 
   componentDidMount() {
-    const interval = setInterval(this.updateTime(), 60000);
+    const interval = setInterval(() => {
+      this.updateTime();
+    }, 60000);
 
     this.setState({ interval: interval });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
   updateTime = () => {
