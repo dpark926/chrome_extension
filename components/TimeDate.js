@@ -7,39 +7,44 @@ import { Months, Days } from "../src/date";
 class TimeDate extends Component {
   constructor() {
     super();
-    let d = new Date();
     this.state = {
-      day: d.getDay(),
-      month: d.getMonth(),
-      date: d.getDate(),
-      year: d.getFullYear(),
-      hour: d.getHours(),
-      minute: d.getMinutes(),
-      second: d.getSeconds()
+      time: new Date()
     };
   }
 
+  componentDidMount() {
+    const interval = setInterval(this.updateTime(), 60000);
+
+    this.setState({ interval: interval });
+  }
+
+  updateTime = () => {
+    const d = new Date();
+    this.setState({ time: d });
+  };
+
   renderDate = () => {
-    const { day, month, date, year } = this.state;
+    const { time } = this.state;
 
     return (
-      <div className="light-gray">{`${Days[day].abv}, ${
-        Months[month].abv
-      }. ${date}, ${year}`}</div>
+      <div className="light-gray">{`${Days[time.getDay()].abv}, ${
+        Months[time.getMonth()].abv
+      }. ${time.getDate()}, ${time.getFullYear()}`}</div>
     );
   };
 
   renderTime = () => {
-    const { hour, minute, second } = this.state;
-    const isHourSingle = hour % 12 < 10 && hour !== 0 ? "0" : "";
-    const isMinuteSingle = minute < 10 ? "0" : "";
-    const isAM = hour < 11;
+    const { time } = this.state;
+    const isHourSingle =
+      time.getHours() % 12 < 10 && time.getHours() !== 0 ? "0" : "";
+    const isMinuteSingle = time.getMinutes() < 10 ? "0" : "";
+    const isAM = time.getHours() < 11;
 
     return (
       <div>
         {`${isHourSingle}${
-          hour % 12 === 0 ? "12" : hour % 12
-        }:${isMinuteSingle}${minute} ${isAM ? "AM" : "PM"}`}
+          time.getHours() % 12 === 0 ? "12" : time.getHours() % 12
+        }:${isMinuteSingle}${time.getMinutes()} ${isAM ? "AM" : "PM"}`}
       </div>
     );
   };
