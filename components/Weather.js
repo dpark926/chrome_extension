@@ -4,6 +4,7 @@ import Settings from "rmdi/lib/Settings";
 import { Days } from "../src/date";
 import { weatherIcons } from "../src/weatherIcons";
 import { keys } from "../config/keys";
+import axios from "axios";
 import "../styles/styles.scss";
 import "../styles/weather.scss";
 
@@ -16,7 +17,14 @@ class Weather extends Component {
   }
 
   componentDidMount() {
-    this.fetchWeatherData();
+    axios.get("/api/weathers").then(res => {
+      if (res.data.length < 1) {
+        this.fetchWeatherData();
+      } else {
+        this.setState({ currentZip: res.data[0].zipcode, zipData: res.data });
+        this.fetchWeatherData(res.data[0].zipcode);
+      }
+    });
   }
 
   toggleWeatherModal = () => {
@@ -29,8 +37,28 @@ class Weather extends Component {
   };
 
   handleSubmit = e => {
-    e.preventDefault();
-    this.fetchWeatherData(this.state.zipCode);
+    e.preventDefault;
+
+    if (this.state.zipData) {
+      axios
+        .post(`api/weathers/${this.state.zipData[0]._id}`, {
+          zipcode: this.state.zipCode
+        })
+        .then(res => {
+          this.setState({ currentZip: res.data.zipcode, zipData: [res.data] });
+          this.fetchWeatherData(res.data.zipcode);
+        });
+    } else {
+      axios
+        .post("/api/weathers", {
+          zipcode: this.state.zipCode
+        })
+        .then(res => {
+          this.setState({ currentZip: res.data.zipcode });
+          this.fetchWeatherData(this.state.currentZip);
+        });
+    }
+
     this.toggleWeatherModal();
   };
 
@@ -63,11 +91,16 @@ class Weather extends Component {
   };
 
   render() {
-    const { weatherData, forecastData, weatherModalOpen } = this.state;
+    const {
+      weatherData,
+      forecastData,
+      weatherModalOpen,
+      currentZip
+    } = this.state;
     const fiveDayForecast = {};
     let newArr = [];
 
-    if (forecastData) {
+    if (forecastData && currentZip) {
       for (let i = 0; i < forecastData.list.length; i++) {
         let forecast = forecastData.list[i];
         let date = forecast.dt_txt.slice(0, 10);
@@ -129,6 +162,7 @@ class Weather extends Component {
           </div>
         )}
         {weatherData &&
+          currentZip &&
           !weatherModalOpen && (
             <div className="relative center p1 flex flex-column justify-center col-2">
               <Settings

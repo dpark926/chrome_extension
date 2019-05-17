@@ -269,7 +269,7 @@ class Stocks extends Component {
               financeTab === "crypto" &&
               cryptoNewsData.results.map((news, idx) => {
                 return (
-                  <div key={idx} className="stocks-item p1">
+                  <div key={news.title + idx} className="stocks-item p1">
                     <Link href={news.url}>
                       <a target="_blank">
                         {news.title}
@@ -322,8 +322,8 @@ class Stocks extends Component {
                   <h4 className="p1 m0 white center">DAILY GOALS</h4>
                   {goalsDaily.map((goal, idx) => {
                     return (
-                      <div className="flex">
-                        <label className="flex-auto p1" key={goal + idx}>
+                      <div className="flex" key={goal + idx}>
+                        <label className="flex-auto p1">
                           <input
                             className="strikethrough mr1"
                             type="checkbox"
@@ -386,7 +386,7 @@ class Stocks extends Component {
                       <div className="flex flex-column">
                         {goalsToday.map((goal, idx) => {
                           return (
-                            <div>
+                            <div key={goal._id}>
                               <div className="flex">
                                 <label className="flex-auto p1 light-gray">
                                   <input
@@ -483,7 +483,7 @@ class Stocks extends Component {
                         <ol className="py1 pl3 m0">
                           {goalsTomorrow.map((goal, idx) => {
                             return (
-                              <div>
+                              <div key={goal._id}>
                                 <div className="flex">
                                   <li className="flex-auto p1">{goal.name}</li>
                                   <Delete

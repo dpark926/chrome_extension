@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const tasks = require("./routes/api/tasks");
 const dailyGoals = require("./routes/api/dailyGoals");
+const weathers = require("./routes/api/weathers");
 const PORT = process.env.PORT || 3001;
 const dev = process.env.NODE_DEV !== "production"; //true false
 const nextApp = next({ dev });
@@ -25,6 +26,7 @@ nextApp.prepare().then(() => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/api/tasks", tasks);
   app.use("/api/dailyGoals", dailyGoals);
+  app.use("/api/weathers", weathers);
   app.get("*", (req, res) => {
     return handle(req, res); // for all the react stuff
   });
