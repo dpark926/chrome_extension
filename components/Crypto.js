@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import Link from "next/link";
 import Settings from "rmdi/lib/Settings";
 import { keys } from "../config/keys";
+import { formatMoney } from "../utils/functions";
 import "../styles/crypto.scss";
 
 class Crypto extends Component {
@@ -65,9 +66,9 @@ class Crypto extends Component {
   onSubmit = () => {
     const { cryptoData, portfolio } = this.state;
     let totalValue = 0;
-    let gainLoss;
+    let gainLoss = 0;
 
-    if (cryptoData) {
+    if (cryptoData && portfolio) {
       for (let key in portfolio) {
         const priceKey = key + "-price";
         const amountKey = key + "-amount";
@@ -77,7 +78,7 @@ class Crypto extends Component {
 
         if (tokenPrice && tokenAmount) {
           totalValue += Math.round(tokenAmount * currentTokenPrice * 100) / 100;
-          gainLoss =
+          gainLoss +=
             Math.round(
               (tokenAmount * currentTokenPrice - tokenAmount * tokenPrice) * 100
             ) / 100;
@@ -143,9 +144,9 @@ class Crypto extends Component {
                 onClick={this.toggleCryptoModal}
               />
             </div>
-            <h2 className="m0 pt1">$ {totalValue}</h2>
+            <h2 className="m0 pt1">$ {formatMoney(totalValue)}</h2>
             <div className={`right-align ${gainLoss < 0 ? "red" : "green"}`}>
-              $ {gainLoss}
+              $ {formatMoney(gainLoss)}
             </div>
           </div>
         )}

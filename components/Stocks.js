@@ -108,7 +108,7 @@ class Stocks extends Component {
     switch (type) {
       case "daily":
         axios
-          .post(process.env.db + "/dailyGoals", {
+          .post("api/dailyGoals", {
             name: newGoal
           })
           .then(res =>
@@ -117,7 +117,7 @@ class Stocks extends Component {
         break;
       case "today":
         axios
-          .post(process.env.db + "/tasks", {
+          .post("api/tasks", {
             name: newGoal,
             goalDate: today.toString().slice(0, 15)
           })
@@ -127,7 +127,7 @@ class Stocks extends Component {
         break;
       case "tomorrow":
         axios
-          .post(process.env.db + "/tasks", {
+          .post("api/tasks", {
             name: newGoal,
             goalDate: tomorrow.toString().slice(0, 15)
           })
@@ -154,7 +154,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${process.env.db}/dailyGoals/${id}`)
+          .delete(`api/dailyGoals/${id}`)
           .then(res => this.setState({ goalsDaily: newClone }));
         break;
       case "today":
@@ -163,7 +163,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${process.env.db}/tasks/${id}`)
+          .delete(`api/tasks/${id}`)
           .then(res => this.setState({ goalsToday: newClone }));
         break;
       case "tomorrow":
@@ -172,7 +172,7 @@ class Stocks extends Component {
           return goal._id !== id;
         });
         axios
-          .delete(`${process.env.db}/tasks/${id}`)
+          .delete(`api/tasks/${id}`)
           .then(res => this.setState({ goalsTomorrow: newClone }));
         break;
       default:

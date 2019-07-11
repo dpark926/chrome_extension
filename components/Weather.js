@@ -37,7 +37,7 @@ class Weather extends Component {
   };
 
   handleSubmit = e => {
-    e.preventDefault;
+    e.preventDefault();
 
     if (this.state.zipData) {
       axios
@@ -161,39 +161,46 @@ class Weather extends Component {
             </form>
           </div>
         )}
-        {weatherData &&
-          currentZip &&
-          !weatherModalOpen && (
-            <div className="relative center p1 flex flex-column justify-center col-2">
-              <Settings
-                className="absolute p1 pointer hover"
-                size={18}
-                color="lightgray"
-                onClick={this.toggleWeatherModal}
-                style={{ top: 0, right: 0 }}
-              />
-              <div>{weatherData.name}</div>
-              <div className="capitalize light-gray">
-                {weatherData.weather[0].description}
-              </div>
-              <div>
-                <img
-                  src={weatherIcons[weatherData.weather[0].icon]}
-                  width={52}
-                  height={52}
-                />
-              </div>
-              <div className="h2">{Math.round(weatherData.main.temp)}°</div>
-              <p className="flex justify-center m0 light-gray">
-                <span className="p1">
-                  {Math.round(weatherData.main.temp_max)}°
-                </span>
-                <span className="p1">
-                  {Math.round(weatherData.main.temp_min)}°
-                </span>
-              </p>
+        {weatherData && currentZip && !weatherModalOpen ? (
+          <div className="relative center p1 flex flex-column justify-center col-2">
+            <Settings
+              className="absolute p1 pointer hover"
+              size={18}
+              color="lightgray"
+              onClick={this.toggleWeatherModal}
+              style={{ top: 0, right: 0 }}
+            />
+            <div>{weatherData.name}</div>
+            <div className="capitalize light-gray">
+              {weatherData.weather[0].description}
             </div>
-          )}
+            <div>
+              <img
+                src={weatherIcons[weatherData.weather[0].icon]}
+                width={52}
+                height={52}
+              />
+            </div>
+            <div className="h2">{Math.round(weatherData.main.temp)}°</div>
+            <p className="flex justify-center m0 light-gray">
+              <span className="p1">
+                {Math.round(weatherData.main.temp_max)}°
+              </span>
+              <span className="p1">
+                {Math.round(weatherData.main.temp_min)}°
+              </span>
+            </p>
+          </div>
+        ) : (
+          <div className="relative p1 flex flex-column items-center col-2">
+            <div className="bg-dark-gray m1 col-9" style={{ height: 20 }} />
+            <div
+              className="bg-dark-gray m1"
+              style={{ height: 52, width: 52 }}
+            />
+            <div className="bg-dark-gray m1 col-6" style={{ height: 20 }} />
+          </div>
+        )}
         <div className="flex flex-auto justify-center col-10">
           {forecastData &&
             newArr &&
