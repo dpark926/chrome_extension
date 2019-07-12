@@ -1,7 +1,25 @@
 @import "./variables";
 
 .news-section {
+  width: 100%;
   border-right: 1px solid $light-gray;
+  font-size: 12px;
+
+  @media all and (min-width: $tablet) {
+    width: 50%;
+    font-size: 16px;
+  }
+}
+
+.news-body {
+  position: absolute;
+  height: calc(60vh - 260px);
+  border-right: 1px solid #9d9d9f;
+  right: -1px;
+
+  @media all and (min-width: $tablet) {
+    height: calc(100vh - 260px);
+  }
 }
 
 .news-item {

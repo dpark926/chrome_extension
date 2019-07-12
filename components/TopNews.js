@@ -48,7 +48,7 @@ class TopNews extends Component {
     const { newsData, categoryTab } = this.state;
 
     return (
-      <div className="news-section col-6 relative">
+      <div className="news-section relative">
         <div className="category-tab flex">
           <div
             className={`category-tab-item col-4 center pointer p1 ${
@@ -92,14 +92,7 @@ class TopNews extends Component {
             <Loader color="#fff" />
           </div>
         )}
-        <div
-          className="absolute"
-          style={{
-            height: "calc(100vh - 260px)",
-            borderRight: "1px solid #9d9d9f",
-            right: "-1px"
-          }}
-        >
+        <div className="news-body">
           <div className="overflow-scroll" style={{ height: "100%" }}>
             {newsData &&
               categoryTab === "general" &&

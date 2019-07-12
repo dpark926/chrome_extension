@@ -237,7 +237,7 @@ class Stocks extends Component {
     });
 
     return (
-      <div className="col-6 relative">
+      <div className="stocks relative">
         <div className="finance-tab flex">
           <div
             className={`finance-tab-item col-6 center pointer p1 ${
@@ -270,10 +270,7 @@ class Stocks extends Component {
               <Loader color="#fff" />
             </div>
           )}
-        <div
-          className="absolute col-12"
-          style={{ height: "calc(100vh - 260px)" }}
-        >
+        <div className="stocks-body">
           <div className="overflow-scroll" style={{ height: "100%" }}>
             {cryptoNewsData &&
               financeTab === "crypto" &&
@@ -337,7 +334,7 @@ class Stocks extends Component {
                       {goalsDaily.map((goal, idx) => {
                         return (
                           <div className="flex" key={goal + idx}>
-                            <label className="flex-auto p1">
+                            <label className="goals-daily-label flex-auto">
                               <input
                                 className="strikethrough mr1"
                                 type="checkbox"

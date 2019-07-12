@@ -1,5 +1,29 @@
 @import "./variables";
 
+.stocks {
+  width: 100%;
+  font-size: 12px;
+  top: calc(60vh - 260px);
+
+  @media all and (min-width: $tablet) {
+    width: 50%;
+    font-size: 16px;
+    top: 0;
+  }
+}
+
+.stocks-body {
+  position: absolute;
+  height: calc(80vh - 260px);
+  border-right: 1px solid #9d9d9f;
+  right: -1px;
+  width: 100%;
+
+  @media all and (min-width: $tablet) {
+    height: calc(100vh - 260px);
+  }
+}
+
 .stocks-section {
   border-right: 1px solid $light-gray;
 }
@@ -21,6 +45,15 @@
 
   &:hover {
     color: $white;
+  }
+}
+
+.goals-daily-label {
+  display: flex;
+  align-items: center;
+
+  @media all and (min-width: $tablet) {
+    padding: 0.5rem;
   }
 }
 

@@ -6,6 +6,7 @@ import Stocks from "../components/Stocks";
 import TopNews from "../components/TopNews";
 import Weather from "../components/Weather";
 import TimeDate from "../components/TimeDate";
+import "../styles/index.scss";
 
 class index extends Component {
   constructor() {
@@ -31,7 +32,7 @@ class index extends Component {
         <div className="flex-auto">
           <TimeDate />
           <Weather />
-          <div className="flex">
+          <div className="index-news--container">
             <TopNews />
             <Stocks />
           </div>
