@@ -171,14 +171,13 @@ class Weather extends Component {
               style={{ top: 0, right: 0 }}
             />
             <div>{weatherData.name}</div>
-            <div className="capitalize light-gray">
+            <div className="weather-description capitalize light-gray">
               {weatherData.weather[0].description}
             </div>
             <div>
               <img
                 src={weatherIcons[weatherData.weather[0].icon]}
-                width={52}
-                height={52}
+                className="weather-icon"
               />
             </div>
             <div className="h2">{Math.round(weatherData.main.temp)}°</div>
@@ -202,36 +201,54 @@ class Weather extends Component {
           </div>
         )}
         <div className="flex flex-auto justify-center col-10">
-          {forecastData &&
-            newArr &&
-            newArr.map((forecast, idx) => {
-              var d = new Date(forecast.dt);
+          {forecastData && newArr
+            ? newArr.map((forecast, idx) => {
+                var d = new Date(forecast.dt);
 
-              return (
-                <div
-                  key={idx}
-                  className="flex flex-column justify-center weather-item col-2 center p1"
-                >
-                  <h4 className="m0">{Days[d.getDay()].abv.toUpperCase()}</h4>
-                  <p className="capitalize light-gray m0">
-                    {forecast.description}
-                  </p>
-                  <div className="py1">
-                    <img
-                      src={weatherIcons[forecast.icon]}
-                      width={52}
-                      height={52}
+                return (
+                  <div
+                    key={idx}
+                    className="flex flex-column justify-center weather-item col-2 center p1"
+                  >
+                    <h4 className="m0">{Days[d.getDay()].abv.toUpperCase()}</h4>
+                    <p className="weather-description capitalize light-gray m0">
+                      {forecast.description}
+                    </p>
+                    <div className="py1">
+                      <img
+                        src={weatherIcons[forecast.icon]}
+                        className="weather-icon"
+                      />
+                    </div>
+                    <p className="m0">
+                      <span className="weather-temp--high">
+                        {Math.round(forecast.high)}°
+                      </span>
+                      <span className="weather-temp--low light-gray">
+                        {Math.round(forecast.low)}°
+                      </span>
+                    </p>
+                  </div>
+                );
+              })
+            : [1, 2, 3, 4, 5].map((el, idx) => {
+                return (
+                  <div className="relative p1 flex flex-column items-center weather-item col-2">
+                    <div
+                      className="bg-dark-gray m1 col-9"
+                      style={{ height: 20 }}
+                    />
+                    <div
+                      className="bg-dark-gray m1"
+                      style={{ height: 52, width: 52 }}
+                    />
+                    <div
+                      className="bg-dark-gray m1 col-6"
+                      style={{ height: 20 }}
                     />
                   </div>
-                  <p className="m0">
-                    <span className="p1">{Math.round(forecast.high)}°</span>
-                    <span className="p1 light-gray">
-                      {Math.round(forecast.low)}°
-                    </span>
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
         </div>
       </div>
     );

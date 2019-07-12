@@ -1,7 +1,12 @@
 @import "./variables";
 
 .crypto {
+  display: none;
   border-left: 1px solid $light-gray;
+
+  @media all and (min-width: $tablet) {
+    display: block;
+  }
 }
 
 .crypto-item {

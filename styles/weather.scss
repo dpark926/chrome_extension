@@ -1,10 +1,58 @@
 @import "./variables";
 
 .weather {
+  display: flex;
+  // flex-direction: column;
+  font-size: 12px;
   border-top: 1px solid $light-gray;
   border-bottom: 1px solid $light-gray;
+
+  @media all and (min-width: $tablet) {
+    // flex-direction: row;
+    font-size: 16px;
+  }
 }
 
 .weather-item {
   border-left: 1px solid $divider;
+}
+
+.weather-city {
+  display: none;
+
+  @media all and (min-width: $tablet) {
+    display: block;
+  }
+}
+
+.weather-description {
+  display: none;
+
+  @media all and (min-width: $tablet) {
+    display: block;
+  }
+}
+
+.weather-icon {
+  width: 24px;
+  height: 24px;
+
+  @media all and (min-width: $tablet) {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+.weather-temp--high {
+  padding-right: 0.25rem;
+
+  @media all and (min-width: $tablet) {
+    padding: 0.5rem;
+  }
+}
+
+.weather-temp--low {
+  @media all and (min-width: $tablet) {
+    padding: 0.5rem;
+  }
 }
