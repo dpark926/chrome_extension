@@ -162,7 +162,7 @@ class Weather extends Component {
           </div>
         )}
         {weatherData && currentZip && !weatherModalOpen ? (
-          <div className="relative center p1 flex flex-column justify-center col-2">
+          <div className="weather-current center p1 col-2">
             <Settings
               className="absolute p1 pointer hover"
               size={18}
@@ -191,16 +191,13 @@ class Weather extends Component {
             </p>
           </div>
         ) : (
-          <div className="relative p1 flex flex-column items-center col-2">
-            <div className="bg-dark-gray m1 col-9" style={{ height: 20 }} />
-            <div
-              className="bg-dark-gray m1"
-              style={{ height: 52, width: 52 }}
-            />
-            <div className="bg-dark-gray m1 col-6" style={{ height: 20 }} />
+          <div className="weather-current p1 items-center col-2">
+            <div className="weather-text--placeholder bg-dark-gray m1 col-9" />
+            <div className="weather-icon bg-dark-gray m1" />
+            <div className="weather-text--placeholder bg-dark-gray m1 col-6" />
           </div>
         )}
-        <div className="flex flex-auto justify-center col-10">
+        <div className="weather-forcast flex flex-auto justify-center">
           {forecastData && newArr
             ? newArr.map((forecast, idx) => {
                 var d = new Date(forecast.dt);
@@ -234,18 +231,9 @@ class Weather extends Component {
             : [1, 2, 3, 4, 5].map((el, idx) => {
                 return (
                   <div className="relative p1 flex flex-column items-center weather-item col-2">
-                    <div
-                      className="bg-dark-gray m1 col-9"
-                      style={{ height: 20 }}
-                    />
-                    <div
-                      className="bg-dark-gray m1"
-                      style={{ height: 52, width: 52 }}
-                    />
-                    <div
-                      className="bg-dark-gray m1 col-6"
-                      style={{ height: 20 }}
-                    />
+                    <div className="weather-text--placeholder bg-dark-gray m1 col-9" />
+                    <div className="weather-icon bg-dark-gray m1" />
+                    <div className="weather-text--placeholder bg-dark-gray m1 col-6" />
                   </div>
                 );
               })}
