@@ -17,14 +17,13 @@ class Weather extends Component {
   }
 
   componentDidMount() {
-    axios.get("/api/weathers").then(res => {
-      if (res.data.length < 1) {
-        this.fetchWeatherData();
-      } else {
+    axios
+      .get("/api/weathers")
+      .then(res => {
         this.setState({ currentZip: res.data[0].zipcode, zipData: res.data });
         this.fetchWeatherData(res.data[0].zipcode);
-      }
-    });
+      })
+      .catch(this.fetchWeatherData());
   }
 
   toggleWeatherModal = () => {

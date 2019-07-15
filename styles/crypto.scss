@@ -1,10 +1,13 @@
 @import "./variables";
 
 .crypto {
-  display: none;
+  position: absolute;
   border-left: 1px solid $light-gray;
+  right: 0;
+  z-index: 1;
 
   @media all and (min-width: $tablet) {
+    position: relative;
     display: block;
   }
 }
