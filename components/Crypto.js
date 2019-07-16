@@ -22,7 +22,7 @@ class Crypto extends Component {
       this.getCryptoData();
     }, 30000);
 
-    this.setState({ interval: interval });
+    this.setState({ interval: interval, cryptoModalOpen: true });
   }
 
   componentWillUnmount() {
@@ -96,8 +96,7 @@ class Crypto extends Component {
 
     this.setState({
       totalValue: Math.round(totalValue * 100) / 100,
-      gainLoss: gainLoss,
-      cryptoModalOpen: false
+      gainLoss: gainLoss
     });
   };
 
@@ -237,7 +236,7 @@ class Crypto extends Component {
                     );
                   })}
               </div>
-              <div className="mt2 mx1">
+              <div className="crypto-close-btn mt2 mx1">
                 <button
                   className="white pointer bg-blue border-none py1 rounded hover z2 col-12"
                   onClick={this.toggleCryptoModal}
@@ -267,10 +266,7 @@ class Crypto extends Component {
             </div>
           )}
         </div>
-        <div
-          className="absolute rounded bg-blue pointer"
-          style={{ right: 0, bottom: 20 }}
-        >
+        <div className="crypto-toggle-button absolute rounded bg-blue pointer">
           <ChevronLeft
             className="pt1 pointer hover"
             size={24}

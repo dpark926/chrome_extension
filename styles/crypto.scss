@@ -16,6 +16,20 @@
   border-top: 1px solid $divider;
 }
 
+.crypto-toggle-button {
+  right: 0;
+  bottom: 20px;
+  @media all and (min-width: $tablet) {
+    display: none;
+  }
+}
+
+.crypto-close-btn {
+  @media all and (min-width: $tablet) {
+    display: none;
+  }
+}
+
 .time-tab {
   border-bottom: 1px solid $divider;
 }
