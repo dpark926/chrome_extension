@@ -36,7 +36,7 @@ const TopNews = () => {
   return (
     <div className="news-section relative">
       <div className="category-tab flex">
-        {categories.map(category => {
+        {categories.map((category, idx) => {
           return (
             <div
               className={`category-tab-item col-4 center pointer p1 capitalize ${
@@ -44,6 +44,7 @@ const TopNews = () => {
                   ? "bg-dark-gray"
                   : "bg-black light-gray"
               }`}
+              key={idx + category}
               onClick={() => selectCategoryTab(category)}
             >
               {category === "general" ? "Top News" : category}

@@ -13,7 +13,7 @@ import { keys } from "../config/keys";
 import "../styles/stocks.scss";
 import axios from "axios";
 
-class Stocks extends Component {
+class Finance extends Component {
   constructor() {
     super();
     this.state = {
@@ -546,4 +546,4 @@ class Stocks extends Component {
   }
 }
 
-export default Stocks;
+export default Finance;

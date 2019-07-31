@@ -113,8 +113,6 @@ const Weather = () => {
     newArr.push(fiveDayForecast[key]);
   }
 
-  console.log(weatherData, forecastData);
-
   return (
     <div className="weather flex">
       {weatherModalOpen && (
@@ -209,7 +207,10 @@ const Weather = () => {
             })
           : [1, 2, 3, 4, 5].map((el, idx) => {
               return (
-                <div className="relative p1 flex flex-column items-center weather-item col-2">
+                <div
+                  className="relative p1 flex flex-column items-center weather-item col-2"
+                  key={idx}
+                >
                   <div className="weather-text--placeholder bg-dark-gray m1 col-9" />
                   <div className="weather-icon bg-dark-gray m1" />
                   <div className="weather-text--placeholder bg-dark-gray m1 col-6" />

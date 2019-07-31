@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Crypto from "../components/Crypto";
-import Stocks from "../components/Stocks";
+import Finance from "../components/Finance";
 import TopNews from "../components/TopNews";
 import Weather from "../components/Weather";
 import TimeDate from "../components/TimeDate";
@@ -34,7 +34,7 @@ class index extends Component {
           <Weather />
           <div className="index-news--container">
             <TopNews />
-            <Stocks />
+            <Finance />
           </div>
         </div>
         <Crypto />
