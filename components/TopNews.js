@@ -1,34 +1,27 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Loader from "react-loader";
 import { keys } from "../config/keys";
 import "../styles/topnews.scss";
 
-class TopNews extends Component {
-  constructor() {
-    super();
-    this.state = {
-      categoryTab: "general"
-    };
-  }
+const TopNews = () => {
+  const [categoryTab, setCategoryTab] = useState("general");
+  const [newsData, setNewsData] = useState();
+  const categories = ["general", "business", "sports", "technology"];
 
-  componentDidMount() {
+  useEffect(() => {
     fetch(
       `https://${keys.newsAPI}top-headlines?country=us&apiKey=${
         keys.newsAPIKey
       }`
     )
       .then(response => response.json())
-      .then(data =>
-        this.setState({
-          newsData: data
-        })
-      )
+      .then(data => setNewsData(data))
       .catch(err => console.log(err));
-  }
+  }, []);
 
-  selectCategoryTab = category => {
-    this.setState({ categoryTab: category });
+  const selectCategoryTab = category => {
+    setCategoryTab(category);
 
     fetch(
       `https://${
@@ -36,66 +29,39 @@ class TopNews extends Component {
       }top-headlines?country=us&category=${category}&apiKey=${keys.newsAPIKey}`
     )
       .then(response => response.json())
-      .then(data =>
-        this.setState({
-          newsData: data
-        })
-      )
+      .then(data => setNewsData(data))
       .catch(err => console.log(err));
   };
 
-  render() {
-    const { newsData, categoryTab } = this.state;
-
-    return (
-      <div className="news-section relative">
-        <div className="category-tab flex">
-          <div
-            className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "general" ? "bg-dark-gray" : "bg-black light-gray"
-            }`}
-            onClick={() => this.selectCategoryTab("general")}
-          >
-            Top News
-          </div>
-          <div
-            className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "business"
-                ? "bg-dark-gray"
-                : "bg-black light-gray"
-            }`}
-            onClick={() => this.selectCategoryTab("business")}
-          >
-            Business
-          </div>
-          <div
-            className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "sports" ? "bg-dark-gray" : "bg-black light-gray"
-            }`}
-            onClick={() => this.selectCategoryTab("sports")}
-          >
-            Sports
-          </div>
-          <div
-            className={`category-tab-item col-4 center pointer p1 ${
-              categoryTab === "technology"
-                ? "bg-dark-gray"
-                : "bg-black light-gray"
-            }`}
-            onClick={() => this.selectCategoryTab("technology")}
-          >
-            Tech
-          </div>
+  return (
+    <div className="news-section relative">
+      <div className="category-tab flex">
+        {categories.map(category => {
+          return (
+            <div
+              className={`category-tab-item col-4 center pointer p1 capitalize ${
+                categoryTab === category
+                  ? "bg-dark-gray"
+                  : "bg-black light-gray"
+              }`}
+              onClick={() => selectCategoryTab(category)}
+            >
+              {category === "general" ? "Top News" : category}
+            </div>
+          );
+        })}
+      </div>
+      {!newsData && (
+        <div className="relative p4">
+          <Loader color="#fff" />
         </div>
-        {!newsData && (
-          <div className="relative p4">
-            <Loader color="#fff" />
-          </div>
-        )}
-        <div className="news-body">
-          <div className="overflow-scroll" style={{ height: "100%" }}>
-            {newsData &&
-              categoryTab === "general" &&
+      )}
+      <div className="news-body">
+        <div className="overflow-scroll" style={{ height: "100%" }}>
+          {categories.map(category => {
+            return (
+              newsData &&
+              categoryTab === category &&
               newsData.articles.map((news, idx) => {
                 return (
                   <div key={idx} className="news-item p1">
@@ -104,45 +70,13 @@ class TopNews extends Component {
                     </Link>
                   </div>
                 );
-              })}
-            {newsData &&
-              categoryTab === "business" &&
-              newsData.articles.map((news, idx) => {
-                return (
-                  <div key={idx} className="news-item p1">
-                    <Link href={news.url}>
-                      <a target="_blank">{news.title}</a>
-                    </Link>
-                  </div>
-                );
-              })}
-            {newsData &&
-              categoryTab === "sports" &&
-              newsData.articles.map((news, idx) => {
-                return (
-                  <div key={idx} className="news-item p1">
-                    <Link href={news.url}>
-                      <a target="_blank">{news.title}</a>
-                    </Link>
-                  </div>
-                );
-              })}
-            {newsData &&
-              categoryTab === "technology" &&
-              newsData.articles.map((news, idx) => {
-                return (
-                  <div key={idx} className="news-item p1">
-                    <Link href={news.url}>
-                      <a target="_blank">{news.title}</a>
-                    </Link>
-                  </div>
-                );
-              })}
-          </div>
+              })
+            );
+          })}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default TopNews;
