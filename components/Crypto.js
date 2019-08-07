@@ -3,7 +3,7 @@ import Link from "next/link";
 import Settings from "rmdi/lib/Settings";
 import ChevronLeft from "rmdi/lib/ChevronLeft";
 import { keys } from "../config/keys";
-import { formatMoney } from "../utils/functions";
+import { formatMoney, changePercent } from "../utils/functions";
 import "../styles/crypto.scss";
 
 class Crypto extends Component {
@@ -111,6 +111,8 @@ class Crypto extends Component {
       portfolio
     } = this.state;
 
+    console.log(cryptoData);
+
     return (
       <Fragment>
         <div
@@ -211,24 +213,47 @@ class Crypto extends Component {
                               <div className="right-align nowrap pl2">
                                 {cryptoData.DISPLAY[token].USD.PRICE}
                               </div>
-                              <div
-                                className={`right-align ${
-                                  cryptoData.DISPLAY[
-                                    token
-                                  ].USD.CHANGEPCT24HOUR.slice(0, 1) === "-"
-                                    ? "red"
-                                    : "green"
-                                }`}
-                              >
-                                {cryptoData ? (
-                                  <div>{`${
-                                    cryptoData.DISPLAY[token].USD
-                                      .CHANGEPCT24HOUR
-                                  } %`}</div>
-                                ) : (
-                                  "--"
-                                )}
-                              </div>
+                              {timeTab === "24h" && (
+                                <div
+                                  className={`right-align ${
+                                    cryptoData.DISPLAY[
+                                      token
+                                    ].USD.CHANGEPCT24HOUR.slice(0, 1) === "-"
+                                      ? "red"
+                                      : "green"
+                                  }`}
+                                >
+                                  {cryptoData ? (
+                                    <div>{`${
+                                      cryptoData.DISPLAY[token].USD
+                                        .CHANGEPCT24HOUR
+                                    } %`}</div>
+                                  ) : (
+                                    "--"
+                                  )}
+                                </div>
+                              )}
+                              {timeTab === "1h" && (
+                                <div
+                                  className={`right-align ${
+                                    changePercent(
+                                      cryptoData.RAW[token].USD.PRICE,
+                                      cryptoData.RAW[token].USD.OPENHOUR
+                                    ) < 0
+                                      ? "red"
+                                      : "green"
+                                  }`}
+                                >
+                                  {cryptoData ? (
+                                    <div>{`${changePercent(
+                                      cryptoData.RAW[token].USD.PRICE,
+                                      cryptoData.RAW[token].USD.OPENHOUR
+                                    )} %`}</div>
+                                  ) : (
+                                    "--"
+                                  )}
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
